@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لوحة الإدارة — Golden Store</title>
+<link rel="icon" href="images/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<!-- ═══ شاشة الدخول ═══ -->
+<div id="login-screen" class="login-wrap" style="display:grid">
+  <div class="login-box">
+    <img src="images/logo.png" class="login-logo" alt="Golden Store">
+    <h1>لوحة الإدارة</h1>
+    <p class="sub">Golden Store — دخول المالك فقط</p>
+    <form id="login-form">
+      <input type="email" name="email" placeholder="البريد الإلكتروني" required>
+      <input type="password" name="password" placeholder="كلمة السر" required>
+      <button class="cta">تسجيل الدخول</button>
+      <p id="login-error" class="err-msg"></p>
+    </form>
+  </div>
+</div>
+
+<!-- ═══ اللوحة ═══ -->
+<div id="panel" style="display:none">
+  <header class="p-head">
+    <h2>🔐 لوحة إدارة Golden Store</h2>
+    <button id="logout-btn">خروج</button>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab active" data-tab="products">📦 المنتجات</button>
+    <button class="tab" data-tab="orders">🧾 الطلبات</button>
+    <button class="tab" data-tab="services">🛎️ الخدمات</button>
+  </nav>
+
+  <main class="p-main">
+    <section id="tab-products" class="tab-content"></section>
+    <section id="tab-orders" class="tab-content" style="display:none"></section>
+    <section id="tab-services" class="tab-content" style="display:none"></section>
+  </main>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="admin.js"></script>
+</body>
+</html>

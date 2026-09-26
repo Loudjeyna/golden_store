@@ -51,7 +51,10 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop
 .hero .go:hover{box-shadow:0 14px 30px rgba(37,99,235,.5)}
 .hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px}
 /* انسخي فوق قاعدة .go.ghost — وللتجربة فقط */
-.go.ghost{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border:none}         box-shadow:0 4px 14px rgba(37,99,235,.12)}
+.go.ghost{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border:none}
+.go.ghost{background:#fff;color:var(--primary-dark);border:2px solid var(--primary);
+          box-shadow:0 4px 14px rgba(37,99,235,.12)}
+
 .go.ghost:hover{box-shadow:0 8px 20px rgba(37,99,235,.25)}
 /* ═══ أقسام الصفحة — ★ 1400 ═══ */
 .sec{max-width:1400px;margin:auto;padding:30px 20px 6px}

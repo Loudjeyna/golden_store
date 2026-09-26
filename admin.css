@@ -1,0 +1,87 @@
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#2563EB; --primary-dark:#1E40AF;
+  --dark:#0F172A; --text:#1E293B; --muted:#64748B;
+  --bg:#F8FAFC; --line:#E2E8F0;
+  --danger:#DC2626; --success:#059669;
+  --radius:18px;
+  --shadow:0 4px 20px rgba(15,23,42,.08);
+}
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+button{font-family:inherit;cursor:pointer}
+img{display:block;max-width:100%}
+
+/* ═══ شاشة الدخول ═══ */
+.login-wrap{position:fixed;inset:0;display:grid;place-items:center;
+  background:linear-gradient(180deg,#EAF2FE,var(--bg));padding:16px}
+.login-box{background:#fff;border-radius:24px;box-shadow:var(--shadow);
+  padding:38px 30px;width:min(400px,100%);text-align:center}
+.login-logo{width:64px;height:64px;border-radius:50%;object-fit:cover;margin:0 auto 14px}
+.login-box h1{color:var(--dark);font-size:1.4rem}
+.login-box .sub{color:var(--muted);font-size:.9rem;margin:6px 0 20px}
+.login-box input{width:100%;padding:12px 14px;border:2px solid var(--line);
+  border-radius:12px;font-family:inherit;font-size:16px;margin-bottom:10px;background:#FCFAF7}
+.login-box input:focus{outline:none;border-color:var(--primary)}
+.err-msg{color:var(--danger);font-size:.85rem;min-height:20px;margin-top:8px;font-weight:700}
+
+/* ═══ اللوحة ═══ */
+.p-head{display:flex;align-items:center;justify-content:space-between;
+  background:#fff;border-bottom:1px solid var(--line);padding:14px 22px;
+  position:sticky;top:0;z-index:10}
+.p-head h2{color:var(--dark);font-size:1.15rem}
+#logout-btn{padding:8px 20px;border:1px solid var(--line);border-radius:999px;
+  background:#fff;font-weight:700;transition:.2s}
+#logout-btn:hover{background:var(--danger);color:#fff;border-color:var(--danger)}
+
+.tabs{display:flex;gap:8px;max-width:1000px;margin:18px auto 0;padding:0 16px}
+.tab{padding:10px 22px;border:2px solid var(--line);border-radius:999px;
+  background:#fff;font-weight:700;transition:.2s}
+.tab.active{background:var(--primary);border-color:var(--primary);color:#fff}
+
+.p-main{max-width:1000px;margin:auto;padding:18px 16px 60px}
+.a-card{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);
+  padding:20px;margin-bottom:20px}
+.a-card h3{color:var(--dark);margin-bottom:14px;font-size:1.05rem}
+
+/* النموذج */
+.a-card input,.a-card select,.a-card textarea{width:100%;padding:11px 13px;
+  border:2px solid var(--line);border-radius:12px;font-family:inherit;
+  font-size:16px;margin-bottom:10px;background:#FCFAF7;resize:none}
+.a-card input:focus,.a-card select:focus,.a-card textarea:focus{
+  outline:none;border-color:var(--primary)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.file-label{display:block;background:#EFF6FF;border:2px dashed var(--primary);
+  border-radius:12px;padding:14px;text-align:center;font-weight:700;
+  color:var(--primary-dark);cursor:pointer;margin-bottom:10px}
+.file-label input{display:none}
+.preview{max-width:180px;border-radius:12px;margin-bottom:10px;display:block}
+.cta{width:100%;padding:13px;border:none;border-radius:14px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff;font-size:1rem;font-weight:800}
+
+/* صفوف المنتجات */
+.p-row{display:flex;gap:12px;align-items:center;padding:12px 0;
+  border-bottom:1px dashed var(--line)}
+.p-row img{width:56px;height:56px;border-radius:12px;object-fit:cover;
+  background:linear-gradient(135deg,#E8F0FE,#DBEAFE)}
+.p-info{flex:1}
+.p-info b{display:block;color:var(--dark);font-size:.95rem}
+.p-info span{font-size:.78rem;color:var(--muted)}
+.p-actions{display:flex;gap:6px}
+.p-actions button{padding:7px 12px;border:1px solid var(--line);border-radius:10px;
+  background:#fff;font-size:.8rem;font-weight:700;transition:.2s}
+.p-actions button:hover{border-color:var(--primary);color:var(--primary-dark)}
+.p-actions .del:hover{border-color:var(--danger);color:var(--danger)}
+.p-row.inactive{opacity:.45}
+
+/* ═══ إشعار ═══ */
+.toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,90px);
+  background:var(--dark);color:#fff;padding:13px 26px;border-radius:999px;
+  font-weight:700;font-size:.92rem;opacity:0;transition:.35s;z-index:200}
+.toast.show{transform:translate(-50%,0);opacity:1}
+.toast.err{background:var(--danger)}
+
+@media(max-width:680px){
+  .row2{grid-template-columns:1fr}
+  .p-head{padding:12px 14px}
+}
