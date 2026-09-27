@@ -22,11 +22,15 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 function showLogin(){ $('#login-screen').style.display='grid'; $('#panel').style.display='none'; }
 
+let ordersChannel = null;
+
 async function enterPanel(){
   $('#login-screen').style.display='none';
   $('#panel').style.display='block';
   await loadCats();
   renderProducts();
+  renderOrders();          // ★ تحميل الطلبات فور الدخول (ليشتغل العداد)
+  startOrdersChannel();    // ★ الاستماع الحي لوصول طلب جديد
 }
 
 async function onLogin(e){
@@ -50,7 +54,7 @@ function switchTab(name){
   document.querySelectorAll('.tab-content').forEach(c =>
     c.style.display = c.id === 'tab-' + name ? 'block' : 'none');
   if (name === 'products') renderProducts();
-  if (name === 'orders')   $('#tab-orders').innerHTML  = '<div class="a-card">🧾 إدارة الطلبات — مرحلة قادمة</div>';
+  if (name === 'orders')   renderOrders();
   if (name === 'services') $('#tab-services').innerHTML = '<div class="a-card">🛎️ إدارة الخدمات — مرحلة قادمة</div>';
 }
 
@@ -205,4 +209,87 @@ function toast(msg, err=false){
   t.className = 'toast show' + (err ? ' err' : '');
   clearTimeout(toastT);
   toastT = setTimeout(() => t.classList.remove('show'), 2600);
+}
+/* ═══════════ الطلبات ═══════════ */
+
+const STATUS_FLOW = {
+  'جديد':  ['مؤكد', 'ملغي'],
+  'مؤكد':  ['منجز', 'ملغي'],
+  'منجز':  [],
+  'ملغي':  []
+};
+
+async function renderOrders(){
+  const { data, error } = await db.from('orders')
+    .select('*, order_items(*)')
+    .order('created_at', { ascending:false });
+  if (error) { console.error(error); return toast('تعذر تحميل الطلبات', true); }
+  const list = data || [];
+  updateOrdersBadge(list);
+
+  if (!list.length) {
+    $('#tab-orders').innerHTML = '<div class="a-card"><h3>🧾 الطلبات</h3><p style="color:var(--muted)">لا توجد طلبات بعد — ستظهر هنا فور وصول أول طلب من الموقع ✓</p></div>';
+    return;
+  }
+  $('#tab-orders').innerHTML = list.map(orderHTML).join('');
+}
+
+function updateOrdersBadge(list){
+  const n = list.filter(o => o.status === 'جديد').length;
+  const b = $('#orders-badge');
+  b.textContent = n;
+  b.style.display = n ? 'inline-grid' : 'none';
+}
+
+function orderHTML(o){
+  const items = (o.order_items || []).map(i =>
+    `<div class="o-item"><span>${i.product_name}${i.variant_label ? ' — '+i.variant_label : ''} ×${i.quantity}</span><b>${money(i.unit_price * i.quantity)}</b></div>`
+  ).join('');
+
+  const waPhone = o.phone.replace(/^0/, '213');
+  const actions = STATUS_FLOW[o.status] || [];
+  const btnLabel = s => s === 'مؤكد' ? '✓ تأكيد الطلب' : s === 'منجز' ? '✓ تم التسليم' : '✕ إلغاء';
+
+  return `
+  <div class="a-card order-card">
+    <div class="o-head">
+      <span class="s-badge" data-s="${o.status}">${o.status}</span>
+      <span class="o-date">${new Date(o.created_at).toLocaleString('ar-DZ')}</span>
+    </div>
+    <div class="o-cust">
+      <b>${o.customer_name}</b>
+      <a href="tel:${o.phone}">📞 ${o.phone}</a>
+      <a href="https://wa.me/${waPhone}" target="_blank" class="wa-link">واتساب 💬</a>
+    </div>
+    <div class="o-addr">📍 ${o.address}${o.notes ? ' — 📝 ' + o.notes : ''}</div>
+    <div class="o-items">${items}</div>
+    <div class="o-total"><span>المجموع</span><b>${money(o.total)}</b></div>
+    ${actions.length ? `
+    <div class="o-actions">
+      ${actions.map(s => `<button class="o-btn ${s==='ملغي'?'danger':''}" onclick="setStatus('${o.id}','${s}')">${btnLabel(s)}</button>`).join('')}
+    </div>` : ''}
+  </div>`;
+}
+
+async function setStatus(id, status){
+  const { error } = await db.from('orders').update({ status }).eq('id', id);
+  if (error) return toast('تعذر التحديث: ' + error.message, true);
+  toast('حالة الطلب أصبحت: ' + status);
+  renderOrders();
+}
+
+function startOrdersChannel(){
+  if (ordersChannel) return;
+  ordersChannel = db.channel('admin-orders')
+    .on('postgres_changes', { event:'INSERT', schema:'public', table:'orders' },
+      async () => {
+        toast('🔔 وصل طلب جديد!');
+        if (document.querySelector('.tab[data-tab="orders"]')?.classList.contains('active')) {
+          await renderOrders();
+        } else {
+          const { data } = await db.from('orders').select('status');
+          updateOrdersBadge(data || []);
+        }
+      })
+    .subscribe(status => console.log('🔌 بث الطلبات:', status));
 }

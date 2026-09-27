@@ -85,3 +85,30 @@ img{display:block;max-width:100%}
   .row2{grid-template-columns:1fr}
   .p-head{padding:12px 14px}
 }
+/* ═══ الطلبات ═══ */
+.tab-badge{display:inline-grid;place-items:center;min-width:20px;height:20px;
+  border-radius:999px;background:var(--danger);color:#fff;font-size:.7rem;
+  font-weight:800;padding:0 5px;margin-inline-start:4px;vertical-align:middle}
+.o-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.s-badge{padding:4px 14px;border-radius:999px;color:#fff;font-size:.8rem;font-weight:800}
+.s-badge[data-s="جديد"]{background:var(--primary)}
+.s-badge[data-s="مؤكد"]{background:#B7791F}
+.s-badge[data-s="منجز"]{background:var(--success)}
+.s-badge[data-s="ملغي"]{background:var(--danger)}
+.o-date{color:var(--muted);font-size:.78rem}
+.o-cust{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.o-cust b{color:var(--dark);font-size:1.05rem}
+.o-cust a{color:var(--primary-dark);text-decoration:none;font-weight:700;font-size:.9rem}
+.wa-link{background:#DCFCE7;padding:4px 10px;border-radius:999px;color:#15803D!important}
+.o-addr{font-size:.88rem;margin-bottom:10px}
+.o-items{border-top:1px dashed var(--line);border-bottom:1px dashed var(--line);padding:8px 0;margin-bottom:8px}
+.o-item{display:flex;justify-content:space-between;font-size:.88rem;padding:3px 0}
+.o-item b{color:var(--primary-dark)}
+.o-total{display:flex;justify-content:space-between;align-items:center;color:var(--dark)}
+.o-total b{color:var(--primary-dark);font-size:1.15rem}
+.o-actions{display:flex;gap:8px;margin-top:12px}
+.o-btn{flex:1;padding:10px;border:none;border-radius:12px;font-weight:800;
+  background:#EFF6FF;color:var(--primary-dark);transition:.2s}
+.o-btn:hover{background:var(--primary);color:#fff}
+.o-btn.danger{background:#FEF2F2;color:var(--danger)}
+.o-btn.danger:hover{background:var(--danger);color:#fff}

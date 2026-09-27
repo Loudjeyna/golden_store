@@ -1,7 +1,7 @@
 /* ═══ الاتصال ═══ */
 const SUPABASE_URL = 'https://cqkbqcvjjrirbrkyodbv.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_vFSo6qX4xD4wLLSPPTJhLA_KSIslSqu';   // ← ★ Publishable key ★
-
+const OWNER_WHATSAPP = '213778663946';
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = s => document.querySelector(s);
 
@@ -42,7 +42,6 @@ const I18N = {
     noDesc:'لا يوجد وصف لهذا المنتج بعد.',
     noProducts:'لا توجد منتجات بعد 🌱',
     noProductsCat:'لا توجد منتجات في هذا القسم بعد 🌱',
-    footer:'صُنع بـ 💛 — جميع الحقوق محفوظة',
     currency:' دج',
     from:'من ',
     sendFail:'تعذر إرسال الطلب، حاول مجدداً',
@@ -88,16 +87,15 @@ heroServicesBtn:'خدماتنا ',
     noDesc:'No description for this product yet.',
     noProducts:'No products yet 🌱',
     noProductsCat:'No products in this category yet 🌱',
-    footer:'Made with 💛 — All rights reserved',
     currency:' DZD',
     from:'from ',
     sendFail:'Failed to send the order, please try again',
     loadFail:'Failed to load products',
     home:'Back to home page',
     heroTitle:'Welcome to Golden Store 💝',
-heroSub:'Gifts & accessories — the latest products at your fingertips',
-footer:'Golden Store © — All rights reserved',
-heroServicesBtn:'Our Services ',
+    heroSub:'Gifts & accessories — the latest products at your fingertips',
+    footer:'Golden Store © — All rights reserved',
+    heroServicesBtn:'Our Services ',
   }
 };
 
@@ -372,6 +370,35 @@ function cQty(ix,d){
 }
 function cDel(ix){ cart.splice(ix,1); saveCart(); renderCart(); }
 
+function buildOrderMessage(orderId, customer){
+  const L = lang === 'ar';
+  const sep = '━━━━━━━━━━━━━━━';
+
+  /* ★ كل سطر منتج: الاسم سطراً، ثم سطر يبدأ بكلمة عربية — فيثبت اتجاهه RTL */
+  const items = cart.map(i =>
+    L
+    ? `▪️ *${i.name}*${i.label ? ' — ' + i.label : ''}\n` +
+      `      الكمية: ${i.qty}  •  ${money(i.price * i.qty)}`
+    : `▪️ *${i.name}*${i.label ? ' — ' + i.label : ''}\n` +
+      `      Qty: ${i.qty}  •  ${money(i.price * i.qty)}`
+  ).join('\n\n');
+
+  const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const notes = customer.notes ? `\n📝 ${customer.notes}` : '';
+
+  return L
+    ? `🛍️ *طلب جديد — Golden Store*\n${sep}\n\n` +
+      `🧾 رقم الطلب: *${orderId.slice(0,8)}*\n\n` +
+      `👤 ${customer.customer_name}\n📞 ${customer.phone}\n📍 ${customer.address}${notes}\n\n` +
+      `${sep}\n🛒 *المنتجات:*\n\n${items}\n\n${sep}\n` +
+      `💰 *المجموع: ${money(total)}*`
+    : `🛍️ *New order — Golden Store*\n${sep}\n\n` +
+      `🧾 Order #: *${orderId.slice(0,8)}*\n\n` +
+      `👤 ${customer.customer_name}\n📞 ${customer.phone}\n📍 ${customer.address}${notes}\n\n` +
+      `${sep}\n🛒 *Products:*\n\n${items}\n\n${sep}\n` +
+      `💰 *Total: ${money(total)}*`;
+}
+
 function renderCart(){
   if (!cart.length) { $('#drawer-body').innerHTML = `<div class="empty-cart"><div>🛒</div>${t('cartEmpty')}</div>`; return; }
   const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
@@ -400,19 +427,48 @@ async function checkout(e){
   if (!cart.length) return;
   const btn = $('#checkout-btn'); btn.disabled = true; btn.textContent = t('sending');
   const fd = new FormData(e.target);
+     const customer = {
+    customer_name: fd.get('name'),   // ★ name ← customer_name
+    phone:         fd.get('phone'),
+    address:       fd.get('address'),
+    notes:         fd.get('notes') || null
+  };
   const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
   const orderId = crypto.randomUUID();
-  const { error } = await db.from('orders').insert({
-    id: orderId, customer_name: fd.get('name'), phone: fd.get('phone'),
-    address: fd.get('address'), notes: fd.get('notes') || null, total
+    const { error } = await db.from('orders').insert({
+    id: orderId, ...customer, total
   });
   if (error) { console.error(error); showToast(t('sendFail'),'err'); btn.disabled=false; btn.textContent=t('checkout'); return; }
   await db.from('order_items').insert(
     cart.map(i => ({ order_id: orderId, product_name: i.name, variant_label: i.label, unit_price: i.price, quantity: i.qty }))
   );
-  cart = []; saveCart();
-  $('#drawer-body').innerHTML = `<div class="success"><div>🎉</div><h3>${t('orderSuccess')}</h3><p>${t('willCall')}</p></div>`;
+  
+const msg = buildOrderMessage(orderId,customer);
+   cart = []; saveCart();
+  
+    $('#drawer-body').innerHTML = `
+    <div class="success">
+      <div class="success-emoji">🎉</div>
+      <h3>${t('orderSuccess')}</h3>
+      <p>${t('willCall')}</p>
+      <div class="order-ref">
+        🧾 ${lang==='ar' ? 'رقم طلبك' : 'Your order #'}: <b>${orderId.slice(0,8)}</b>
+      </div>
+      <a class="wa-big" href="https://wa.me/${OWNER_WHATSAPP}?text=${encodeURIComponent(msg)}"
+         target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        ${lang==='ar' ? 'أكمل عبر واتساب' : 'Continue on WhatsApp'}
+      </a>
+      <button class="done-btn" onclick="closeOrderDone()">
+        ${lang==='ar' ? '✓ تم — سنتصل بك' : '✓ Done — we will call you'}
+      </button>
+    </div>`;
   showToast(t('orderArrived'));
+}
+
+function closeOrderDone(){
+  toggleCart(false);  
+  renderCart();
 }
 
 /* ═══ إشعارات ═══ */
