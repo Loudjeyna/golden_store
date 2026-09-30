@@ -147,12 +147,7 @@ function applyLang(){
   document.querySelector('.logo')?.setAttribute('aria-label', L.home);
   if (loaded) renderPage();
 
-
-
-
-  
 }
-
 
 function toggleLang(){
   lang = lang === 'ar' ? 'en' : 'ar';
