@@ -3,6 +3,7 @@ const SUPABASE_URL = 'https://cqkbqcvjjrirbrkyodbv.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_vFSo6qX4xD4wLLSPPTJhLA_KSIslSqu';   // ← ★ Publishable key ★
 const OWNER_WHATSAPP = '213778663946';
 const MESSENGER_LINK = 'https://m.me/bloomstore16';
+
 let lastOrderMsg = '';   // نص آخر طلب — لاستخدامه في Messenger
 
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -16,7 +17,7 @@ const I18N = {
     heroTitle:'أهلاً بك في Golden Store 💝',
     heroSub:'هدايا وإكسسوارات — أحدث المنتجات بين يديك',
     heroBtn:'تصفح الأقسام',
-    heroServicesBtn:'خدماتنا 🛎️',
+    heroServicesBtn:'خدماتنا ',
     catsTitle:'🗂️ الأقسام',
     recentTitle:'✨ وصل حديثاً',
     allCats:'الكل',
@@ -52,7 +53,7 @@ const I18N = {
     sendFail:'تعذر إرسال الطلب، حاول مجدداً',
     loadFail:'تعذر تحميل المنتجات',
     home:'العودة إلى الصفحة الرئيسية',
-    servicesTitle:'🛎️ خدماتنا'
+    servicesTitle:' خدماتنا'
   },
   en: {
     dir:'ltr',
@@ -110,7 +111,6 @@ const ICONS = {
   'سماعات': `<svg viewBox="0 0 24 24" ${S}><path d="M4 17.5V13a8 8 0 0 1 16 0v4.5"/><rect x="3" y="14" width="4.5" height="7" rx="2"/><rect x="16.5" y="14" width="4.5" height="7" rx="2"/></svg>`,
   'إكسسوارات بنات': `<svg viewBox="0 0 24 24" ${S}><path d="M12 3.5l1.7 4.3 4.3 1.7-4.3 1.7L12 15.5l-1.7-4.3L6 9.5l4.3-1.7z"/><path d="M18.5 14.5l.9 2.1 2.1.9-2.1.9-.9 2.1-2.1-.9-2.1-.9 2.1-.9z"/><path d="M6 17l.7 1.6 1.6.7-1.6.7L6 21.6l-.7-1.6-1.6-.7 1.6-.7z"/></svg>`,
   'مجوهرات': `<svg viewBox="0 0 24 24" ${S}><path d="M7 3.5h10l4 5.5-9 12-9-12z"/><path d="M3 9h18M9.5 3.5 12 9l2.5-5.5M12 21 9.5 9M12 21l2.5-12"/></svg>`,
-  'إكسسوارات شعر': `<svg viewBox="0 0 24 24" ${S}><path d="M12 12 5.8 8.4C4.2 7.5 4.4 5 6.4 4.9 9.3 4.7 11.2 8.2 12 12z"/><path d="M12 12l6.2-3.6c1.6-.9 1.4-3.4-.6-3.5C14.7 4.7 12.8 8.2 12 12z"/><circle cx="12" cy="12" r="1.7"/><path d="M10.6 14.2c-1.3 2-2 3.9-1.6 6.3M13.4 14.2c1.3 2 2 3.9 1.6 6.3"/></svg>`,
   'ساعات رجالية': `<svg viewBox="0 0 24 24" ${S}><circle cx="12" cy="12" r="5.3"/><path d="M9.2 7l.6-4.2h4.4L14.8 7M9.2 17l.6 4.2h4.4l.6-4.2"/><path d="M12 9.6V12l1.7 1.1"/></svg>`,
   'ساعات نسائية': `<svg viewBox="0 0 24 24" ${S}><circle cx="12" cy="12" r="5.3"/><path d="M9.2 7l.6-4.2h4.4L14.8 7M9.2 17l.6 4.2h4.4l.6-4.2"/><path d="M12 9.6V12l1.7 1.1"/></svg>`,
   'أساور': `<svg viewBox="0 0 24 24" ${S}><rect x="2.8" y="14.2" width="8.6" height="5.6" rx="2.8" transform="rotate(-45 7.1 17)"/><rect x="12.6" y="4.2" width="8.6" height="5.6" rx="2.8" transform="rotate(-45 16.9 7)"/><path d="M9.5 14.5l5-5"/></svg>`,
