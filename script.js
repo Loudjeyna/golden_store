@@ -373,7 +373,7 @@ function cDel(ix){ cart.splice(ix,1); saveCart(); renderCart(); }
 
 function buildOrderMessage(orderId, customer){
   const L = lang === 'ar';
-  const sep = '━━━━━━━━━━━━━━━';
+  const sep = '━━━━━━━━━━━━━━━━━━━';
 
   /* ★ كل سطر منتج: الاسم سطراً، ثم سطر يبدأ بكلمة عربية — فيثبت اتجاهه RTL */
   const items = cart.map(i =>
