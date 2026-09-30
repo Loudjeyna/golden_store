@@ -3,6 +3,8 @@ const SUPABASE_URL = 'https://cqkbqcvjjrirbrkyodbv.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_vFSo6qX4xD4wLLSPPTJhLA_KSIslSqu';   // ← ★ Publishable key ★
 const OWNER_WHATSAPP = '213778663946';
 const MESSENGER_LINK = 'https://m.me/bloomstore16';
+let lastOrderMsg = '';   // نص آخر طلب — لاستخدامه في Messenger
+
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = s => document.querySelector(s);
 
@@ -11,15 +13,16 @@ const I18N = {
   ar: {
     dir:'rtl',
     title:'Golden Store',
-    heroTitle:'هدايا وإكسسوارات  💝',
-    heroSub:'أحدث المنتجات بين يديك — تصفح وأضيف للسلة',
+    heroTitle:'أهلاً بك في Golden Store 💝',
+    heroSub:'هدايا وإكسسوارات — أحدث المنتجات بين يديك',
     heroBtn:'تصفح الأقسام',
+    heroServicesBtn:'خدماتنا 🛎️',
     catsTitle:'🗂️ الأقسام',
     recentTitle:'✨ وصل حديثاً',
     allCats:'الكل',
     groupsIn:'مجموعات داخل',
     backToCats:'← كل الأقسام',
-    cartTitle:'سلة المشتريات',
+    cartTitle:'🛒 سلة المشتريات',
     cartEmpty:'سلتك فارغة — ابدأ التسوق!',
     total:'المجموع',
     checkout:'تأكيد الطلب',
@@ -43,28 +46,27 @@ const I18N = {
     noDesc:'لا يوجد وصف لهذا المنتج بعد.',
     noProducts:'لا توجد منتجات بعد 🌱',
     noProductsCat:'لا توجد منتجات في هذا القسم بعد 🌱',
+    footer:'Golden Store © — جميع الحقوق محفوظة',
     currency:' دج',
     from:'من ',
     sendFail:'تعذر إرسال الطلب، حاول مجدداً',
     loadFail:'تعذر تحميل المنتجات',
     home:'العودة إلى الصفحة الرئيسية',
-    heroTitle:'أهلاً بك في Golden Store 💝',
-heroSub:'هدايا وإكسسوارات — أحدث المنتجات بين يديك',
-footer:'Golden Store © — جميع الحقوق محفوظة',
-heroServicesBtn:'خدماتنا ',
+    servicesTitle:'🛎️ خدماتنا'
   },
   en: {
     dir:'ltr',
     title:'Golden Store',
-    heroTitle:'Gifts & Accessories that delight hearts 💝',
-    heroSub:'The latest products at your fingertips — browse & add to cart',
+    heroTitle:'Welcome to Golden Store 💝',
+    heroSub:'Gifts & accessories — the latest products at your fingertips',
     heroBtn:'Browse Categories',
+    heroServicesBtn:'Our Services 🛎️',
     catsTitle:'🗂️ Categories',
     recentTitle:'✨ New Arrivals',
     allCats:'All',
     groupsIn:'Groups in',
     backToCats:'← All Categories',
-    cartTitle:'Shopping Cart',
+    cartTitle:'🛒 Shopping Cart',
     cartEmpty:'Your cart is empty — start shopping!',
     total:'Total',
     checkout:'Place Order',
@@ -88,19 +90,17 @@ heroServicesBtn:'خدماتنا ',
     noDesc:'No description for this product yet.',
     noProducts:'No products yet 🌱',
     noProductsCat:'No products in this category yet 🌱',
+    footer:'Golden Store © — All rights reserved',
     currency:' DZD',
     from:'from ',
     sendFail:'Failed to send the order, please try again',
     loadFail:'Failed to load products',
     home:'Back to home page',
-    heroTitle:'Welcome to Golden Store 💝',
-    heroSub:'Gifts & accessories — the latest products at your fingertips',
-    footer:'Golden Store © — All rights reserved',
-    heroServicesBtn:'Our Services ',
+    servicesTitle:'🛎️ Our Services'
   }
 };
 
-/* ═══ أيقونات SVG — بلون الهوية، بديلة عن كل الإيموجي الوظيفي ═══ */
+/* ═══ أيقونات SVG ═══ */
 const S = 'fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"';
 const ICONS = {
   'هدايا': `<svg viewBox="0 0 24 24" ${S}><rect x="3" y="8" width="18" height="4" rx="1.2"/><path d="M5 12v7.5A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V12"/><path d="M12 8v13"/><path d="M12 8s-1.6-4.2-4.2-4.2a2.1 2.1 0 0 0 0 4.2"/><path d="M12 8s1.6-4.2 4.2-4.2a2.1 2.1 0 0 1 0 4.2"/></svg>`,
@@ -108,7 +108,7 @@ const ICONS = {
   'كفرات': `<svg viewBox="0 0 24 24" ${S}><rect x="7" y="2.5" width="10" height="19" rx="3"/><circle cx="12" cy="6" r="1.3"/><path d="M10.5 18.5h3"/></svg>`,
   'شواحن وكوابل': `<svg viewBox="0 0 24 24" ${S}><path d="M9 2.5V8M15 2.5V8"/><path d="M7 8h10v2.8a5 5 0 0 1-10 0z"/><path d="M12 15.8V21"/></svg>`,
   'سماعات': `<svg viewBox="0 0 24 24" ${S}><path d="M4 17.5V13a8 8 0 0 1 16 0v4.5"/><rect x="3" y="14" width="4.5" height="7" rx="2"/><rect x="16.5" y="14" width="4.5" height="7" rx="2"/></svg>`,
-  'إكسسوارات بنات': `<svg viewBox="0 0 24 24" ${S}><path d="M12 3.5l1.7 4.3 4.3 1.7-4.3 1.7L12 15.5l-1.7-4.3L6 9.5l4.3-1.7z"/><path d="M18.5 14.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/><path d="M6 17l.7 1.6 1.6.7-1.6.7L6 21.6l-.7-1.6-1.6-.7 1.6-.7z"/></svg>`,
+  'إكسسوارات بنات': `<svg viewBox="0 0 24 24" ${S}><path d="M12 3.5l1.7 4.3 4.3 1.7-4.3 1.7L12 15.5l-1.7-4.3L6 9.5l4.3-1.7z"/><path d="M18.5 14.5l.9 2.1 2.1.9-2.1.9-.9 2.1-2.1-.9-2.1-.9 2.1-.9z"/><path d="M6 17l.7 1.6 1.6.7-1.6.7L6 21.6l-.7-1.6-1.6-.7 1.6-.7z"/></svg>`,
   'مجوهرات': `<svg viewBox="0 0 24 24" ${S}><path d="M7 3.5h10l4 5.5-9 12-9-12z"/><path d="M3 9h18M9.5 3.5 12 9l2.5-5.5M12 21 9.5 9M12 21l2.5-12"/></svg>`,
   'إكسسوارات شعر': `<svg viewBox="0 0 24 24" ${S}><path d="M12 12 5.8 8.4C4.2 7.5 4.4 5 6.4 4.9 9.3 4.7 11.2 8.2 12 12z"/><path d="M12 12l6.2-3.6c1.6-.9 1.4-3.4-.6-3.5C14.7 4.7 12.8 8.2 12 12z"/><circle cx="12" cy="12" r="1.7"/><path d="M10.6 14.2c-1.3 2-2 3.9-1.6 6.3M13.4 14.2c1.3 2 2 3.9 1.6 6.3"/></svg>`,
   'ساعات رجالية': `<svg viewBox="0 0 24 24" ${S}><circle cx="12" cy="12" r="5.3"/><path d="M9.2 7l.6-4.2h4.4L14.8 7M9.2 17l.6 4.2h4.4l.6-4.2"/><path d="M12 9.6V12l1.7 1.1"/></svg>`,
@@ -139,14 +139,21 @@ function applyLang(){
   $('#hero-title').textContent = L.heroTitle;
   $('#hero-sub').textContent   = L.heroSub;
   $('#hero-btn').textContent   = L.heroBtn;
+  $('#hero-services-btn').textContent = L.heroServicesBtn;
   $('#cats-title').textContent = L.catsTitle;
   $('#footer-txt').textContent = L.footer;
   $('#cart-title').textContent = L.cartTitle;
   $('#lang-btn').textContent   = lang === 'ar' ? 'EN' : 'ع';
   document.querySelector('.logo')?.setAttribute('aria-label', L.home);
   if (loaded) renderPage();
-   $('#hero-services-btn').textContent = t('heroServicesBtn');
+
+
+
+
+  
 }
+
+
 function toggleLang(){
   lang = lang === 'ar' ? 'en' : 'ar';
   localStorage.setItem('store_lang', lang);
@@ -154,7 +161,7 @@ function toggleLang(){
 }
 
 /* ═══ الحالة ═══ */
-let products = [], cats = [], loaded = false;
+let products = [], cats = [], services = [], loaded = false;
 let view = 'home', catId = null, subId = null;
 let current = null, selVariant = 0, qty = 1;
 let cart = JSON.parse(localStorage.getItem('dz_cart') || '[]');
@@ -173,19 +180,22 @@ const catLabel = p => {
 
 /* ═══ التحميل ═══ */
 async function loadAll(){
-  const [cRes, pRes] = await Promise.all([
+  const [cRes, pRes, sRes] = await Promise.all([
     db.from('categories').select('*').order('sort_order'),
-    db.from('products').select('*, product_variants(*)').eq('is_active', true).order('created_at', { ascending:false })
+    db.from('products').select('*, product_variants(*)').eq('is_active', true).order('created_at', { ascending:false }),
+    db.from('services').select('*').eq('is_active', true)
   ]);
   if (cRes.error) console.error(cRes.error);
   if (pRes.error) console.error(pRes.error);
+  if (sRes.error) console.error(sRes.error);
   cats = cRes.data || [];
   products = pRes.data || [];
+  services = sRes.data || [];
   loaded = true;
   renderPage();
 }
 
-function renderPage(){ renderCatGrid(); renderSubArea(); renderShop(); renderCartBadge(); }
+function renderPage(){ renderCatGrid(); renderSubArea(); renderShop(); renderServices(); renderCartBadge(); }
 
 function renderCatGrid(){
   const cards = mainCats().map(c => `
@@ -195,8 +205,7 @@ function renderCatGrid(){
         : `<div class="ph">${icon(c.name)}</div>`}
       <div class="ov"><b>${c.name}</b></div>
     </div>`).join('');
-  /* نكرر البلوكات مرتين — أساس الالتفاف اللانهائي */
-  $('#cat-grid').innerHTML = `
+    $('#cat-grid').innerHTML = `
     <div class="cat-strip">
       <div class="cat-track">${cards}${cards}</div>
     </div>`;
@@ -371,11 +380,11 @@ function cQty(ix,d){
 }
 function cDel(ix){ cart.splice(ix,1); saveCart(); renderCart(); }
 
+/* ═══ رسالة الطلب — فاتورة منسقة لواتساب و Messenger ═══ */
 function buildOrderMessage(orderId, customer){
   const L = lang === 'ar';
-  const sep = '━━━━━━━━━━━━━━━━━━━';
+  const sep = '━━━━━━━━━━━━━━━';
 
-  /* ★ كل سطر منتج: الاسم سطراً، ثم سطر يبدأ بكلمة عربية — فيثبت اتجاهه RTL */
   const items = cart.map(i =>
     L
     ? `▪️ *${i.name}*${i.label ? ' — ' + i.label : ''}\n` +
@@ -423,30 +432,43 @@ function renderCart(){
     </form>`;
 }
 
+/* ═══ إرسال الطلب ═══ */
 async function checkout(e){
   e.preventDefault();
   if (!cart.length) return;
   const btn = $('#checkout-btn'); btn.disabled = true; btn.textContent = t('sending');
   const fd = new FormData(e.target);
-     const customer = {
-    customer_name: fd.get('name'),   // ★ name ← customer_name
+
+  const customer = {
+    customer_name: fd.get('name'),
     phone:         fd.get('phone'),
     address:       fd.get('address'),
     notes:         fd.get('notes') || null
   };
+
   const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
   const orderId = crypto.randomUUID();
-    const { error } = await db.from('orders').insert({
+
+  const { error } = await db.from('orders').insert({
     id: orderId, ...customer, total
   });
-  if (error) { console.error(error); showToast(t('sendFail'),'err'); btn.disabled=false; btn.textContent=t('checkout'); return; }
+
+  if (error) {
+    console.error('خطأ حفظ الطلب:', error);
+    showToast(t('sendFail'),'err');
+    btn.disabled=false; btn.textContent=t('checkout');
+    return;
+  }
+
   await db.from('order_items').insert(
     cart.map(i => ({ order_id: orderId, product_name: i.name, variant_label: i.label, unit_price: i.price, quantity: i.qty }))
   );
-  
-const msg = buildOrderMessage(orderId,customer);
-   cart = []; saveCart();
-    $('#drawer-body').innerHTML = `
+
+  const msg = buildOrderMessage(orderId, customer);
+  lastOrderMsg = msg;
+  cart = []; saveCart();
+
+  $('#drawer-body').innerHTML = `
     <div class="success">
       <div class="success-emoji">🎉</div>
       <h3>${t('orderSuccess')}</h3>
@@ -460,7 +482,7 @@ const msg = buildOrderMessage(orderId,customer);
           <svg viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
           ${lang==='ar' ? 'أكمل عبر واتساب' : 'Continue on WhatsApp'}
         </a>
-        <button class="msgr-big" onclick="openMessenger('${orderId}')">
+        <button class="msgr-big" onclick="openMessenger()">
           <svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 4.975 0 11.111c0 3.497 1.745 6.616 4.472 8.652V24l4.086-2.242c1.09.301 2.246.464 3.442.464 6.627 0 12-4.974 12-11.111C24 4.975 18.627 0 12 0zm1.193 14.963l-3.056-3.259-5.963 3.259L10.733 8.1l3.13 3.259 5.889-3.259-6.559 6.863z"/></svg>
           ${lang==='ar' ? 'أو أكمل عبر Messenger' : 'Or continue on Messenger'}
         </button>
@@ -472,29 +494,53 @@ const msg = buildOrderMessage(orderId,customer);
   showToast(t('orderArrived'));
 }
 
-/* ★ Messenger: نسخ التفاصيل ثم فتح المحادثة */
-async function openMessenger(orderId){
-  const o = ordersCache.find(x => x.id === orderId);
-  const items = (o?.order_items || []).map(i =>
-    `• ${i.product_name}${i.variant_label ? ' ('+i.variant_label+')' : ''} ×${i.quantity} = ${money(i.unit_price * i.quantity)}`
-  ).join('\n');
-  const text = (lang==='ar' ? '🛍️ طلبي من Golden Store\nرقم الطلب: ' : '🛍️ My order from Golden Store\nOrder #: ')
-    + orderId.slice(0,8)
-    + (o ? `\n\n👤 ${o.customer_name}\n📞 ${o.phone}\n📍 ${o.address}\n\n${items}\n\n💰 ${money(o.total)}` : '');
-
+/* ★ Messenger: نسخ التفاصيل ثم فتح المحادثة — ★ showToast وليس toast! */
+async function openMessenger(){
+  if (!lastOrderMsg) return;
   try {
-    await navigator.clipboard.writeText(text);
-    toast(lang==='ar' ? '📋 تم نسخ تفاصيل طلبك — الصقيها في المحادثة' : '📋 Order copied — paste it in the chat');
+    await navigator.clipboard.writeText(lastOrderMsg);
+    showToast(lang==='ar' ? '📋 تم نسخ تفاصيل طلبك — الصقيها في المحادثة' : '📋 Order copied — paste it in the chat');
   } catch {
-    toast(lang==='ar' ? 'انسخي تفاصيل طلبك يدوياً من الإيميل/اللوحة' : 'Please copy your order details manually');
+    showToast(lang==='ar' ? 'انسخ التفاصيل يدوياً وأرسلها في المحادثة' : 'Copy the details and send them in the chat');
   }
   window.open(MESSENGER_LINK, '_blank');
 }
 
 
+
 function closeOrderDone(){
-  toggleCart(false);  
+  toggleCart(false);
   renderCart();
+}
+
+/* ═══ الخدمات ═══ */
+function renderServices(){
+  const grid = $('#services-grid');
+  if (!grid) return;
+  if (!services.length) { grid.innerHTML = ''; return; }
+  grid.innerHTML = services.map(s => `
+    <div class="service-card">
+      <div class="service-img">
+        ${s.image_url
+          ? `<img src="${imgURL(s.image_url)}" alt="${s.name}" loading="lazy" onerror="this.remove()">`
+          : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3c0 7.2 3.4 11.5 7.5 11.5s7.5-4.3 7.5-11.5"/><path d="M12 14.5v2.3"/><path d="m12 21-2.1-2.9L12 15l2.1 3.1z"/></svg>`}
+      </div>
+      <div class="service-body">
+        <h3>${s.name}</h3>
+        <p>${s.description || ''}</p>
+        <div class="service-foot">
+          <b>${s.price ? money(s.price) : (lang==='ar' ? 'حسب الطلب' : 'Price on request')}</b>
+          <button class="service-btn" onclick="orderService(${s.id})">${lang==='ar' ? 'اطلب الخدمة' : 'Request Service'}</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function orderService(id){
+  const s = services.find(x => x.id === id);
+  if (!s) return;
+  const msg = encodeURIComponent(lang==='ar' ? `مرحباً، أريد طلب خدمة: ${s.name}` : `Hello, I would like to request a service: ${s.name}`);
+  window.open(`https://wa.me/${OWNER_WHATSAPP}?text=${msg}`, '_blank');
 }
 
 /* ═══ إشعارات ═══ */

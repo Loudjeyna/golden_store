@@ -29,9 +29,9 @@ async function enterPanel(){
   $('#panel').style.display='block';
   await loadCats();
   renderProducts();
-  renderOrders();          // ★ تحميل الطلبات فور الدخول (ليشتغل العداد)
-    loadOrdersCache();
-  startOrdersChannel();    // ★ الاستماع الحي لوصول طلب جديد
+  renderOrders();          // تحميل الطلبات فور الدخول (ليشتغل العداد)
+  loadOrdersCache();
+  startOrdersChannel();    // الاستماع الحي لوصول طلب جديد
 }
 
 async function onLogin(e){
@@ -122,8 +122,8 @@ async function renderProducts(){
         }).join('') : '<p style="color:var(--muted)">لا منتجات بعد</p>'}
       </div>
     </div>`;
-
-  $('#add-form').addEventListener('submit', addProduct);
+  /* ★ ملاحظة: لا addEventListener إضافي هنا — onsubmit في النموذج يكفي
+     (المعالج المزدوج كان يسبب حفظ المنتج مرتين) */
 }
 
 function previewImg(input){
@@ -202,15 +202,6 @@ async function delProduct(id){
   renderProducts();
 }
 
-/* ═══ إشعار ═══ */
-let toastT;
-function toast(msg, err=false){
-  const t = $('#toast');
-  t.textContent = msg;
-  t.className = 'toast show' + (err ? ' err' : '');
-  clearTimeout(toastT);
-  toastT = setTimeout(() => t.classList.remove('show'), 2600);
-}
 /* ═══════════ الطلبات ═══════════ */
 
 const STATUS_FLOW = {
@@ -285,6 +276,7 @@ function startOrdersChannel(){
     .on('postgres_changes', { event:'INSERT', schema:'public', table:'orders' },
       async () => {
         toast('🔔 وصل طلب جديد!');
+        loadOrdersCache();          // ★ الكاش يُحدَّث مع كل طلب — يبقى طازجاً
         if (document.querySelector('.tab[data-tab="orders"]')?.classList.contains('active')) {
           await renderOrders();
         } else {
@@ -294,8 +286,19 @@ function startOrdersChannel(){
       })
     .subscribe(status => console.log('🔌 بث الطلبات:', status));
 }
+
 let ordersCache = [];
 async function loadOrdersCache(){
   const { data } = await db.from('orders').select('*, order_items(*)').order('created_at', {ascending:false}).limit(50);
   ordersCache = data || [];
+}
+
+/* ═══ إشعار ═══ */
+let toastT;
+function toast(msg, err=false){
+  const t = $('#toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (err ? ' err' : '');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => t.classList.remove('show'), 2600);
 }
