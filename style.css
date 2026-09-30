@@ -319,3 +319,9 @@ footer{text-align:center;padding:26px;color:var(--muted);font-size:.85rem;border
 .social-link.msgr:hover{border-color:#A334FA}
 .social-link.wapp{color:#25D366}
 .social-link.wapp:hover{border-color:#25D366}
+.msgr-big{display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#A334FA,#7A0BC0);
+  color:#fff;font-weight:800;font-size:1rem;border:none;cursor:pointer;font-family:inherit;
+  box-shadow:0 6px 18px rgba(163,52,250,.3);transition:transform .2s,box-shadow .2s}
+.msgr-big:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(163,52,250,.4)}
+.msgr-big svg{width:22px;height:22px;fill:#fff;flex-shrink:0}

@@ -30,6 +30,7 @@ async function enterPanel(){
   await loadCats();
   renderProducts();
   renderOrders();          // ★ تحميل الطلبات فور الدخول (ليشتغل العداد)
+    loadOrdersCache();
   startOrdersChannel();    // ★ الاستماع الحي لوصول طلب جديد
 }
 
@@ -292,4 +293,9 @@ function startOrdersChannel(){
         }
       })
     .subscribe(status => console.log('🔌 بث الطلبات:', status));
+}
+let ordersCache = [];
+async function loadOrdersCache(){
+  const { data } = await db.from('orders').select('*, order_items(*)').order('created_at', {ascending:false}).limit(50);
+  ordersCache = data || [];
 }
