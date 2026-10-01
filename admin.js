@@ -23,15 +23,18 @@ window.addEventListener('DOMContentLoaded', async () => {
 function showLogin(){ $('#login-screen').style.display='grid'; $('#panel').style.display='none'; }
 
 let ordersChannel = null;
+let svcChannel = null;
 
 async function enterPanel(){
   $('#login-screen').style.display='none';
   $('#panel').style.display='block';
   await loadCats();
   renderProducts();
-  renderOrders();          // تحميل الطلبات فور الدخول (ليشتغل العداد)
+  renderOrders();
   loadOrdersCache();
-  startOrdersChannel();    // الاستماع الحي لوصول طلب جديد
+  startOrdersChannel();
+  renderServiceRequests();       // ★ طلبات الخدمات فور الدخول
+  startServiceRequestsChannel(); // ★ بث حي لطلبات الخدمات
 }
 
 async function onLogin(e){
@@ -54,9 +57,10 @@ function switchTab(name){
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
   document.querySelectorAll('.tab-content').forEach(c =>
     c.style.display = c.id === 'tab-' + name ? 'block' : 'none');
-  if (name === 'products') renderProducts();
-  if (name === 'orders')   renderOrders();
-  if (name === 'services') $('#tab-services').innerHTML = '<div class="a-card">🛎️ إدارة الخدمات — مرحلة قادمة</div>';
+  if (name === 'products')      renderProducts();
+  if (name === 'orders')        renderOrders();
+  if (name === 'svc-requests')  renderServiceRequests();
+  if (name === 'services') $('#tab-services').innerHTML = '<div class="a-card">🛎️ إدارة الخدمات — مرحلة قادمة (التعديل حالياً من قاعدة البيانات مباشرة)</div>';
 }
 
 /* ═══ الأقسام ═══ */
@@ -122,8 +126,6 @@ async function renderProducts(){
         }).join('') : '<p style="color:var(--muted)">لا منتجات بعد</p>'}
       </div>
     </div>`;
-  /* ★ ملاحظة: لا addEventListener إضافي هنا — onsubmit في النموذج يكفي
-     (المعالج المزدوج كان يسبب حفظ المنتج مرتين) */
 }
 
 function previewImg(input){
@@ -142,7 +144,6 @@ async function addProduct(e){
   btn.disabled = true; btn.textContent = 'جاري الحفظ...';
 
   try {
-    /* 1) رفع الصورة — إن اختيرت */
     const file = fd.get('image');
     let images = [];
     if (file && file.size) {
@@ -155,7 +156,6 @@ async function addProduct(e){
       images.push(data.publicUrl);
     }
 
-    /* 2) حفظ المنتج — مع ربط القسم الرئيسي تلقائياً */
     const subId = +fd.get('subcategory_id');
     const sub = cats.find(c => c.id === subId);
     const { data: prod, error: pErr } = await db.from('products').insert({
@@ -168,7 +168,6 @@ async function addProduct(e){
     }).select().single();
     if (pErr) throw new Error('فشل حفظ المنتج: ' + pErr.message);
 
-    /* 3) حفظ الخيار (السعر والكمية) */
     const { error: vErr } = await db.from('product_variants').insert({
       product_id: prod.id,
       label: fd.get('vlabel') || 'قطعة',
@@ -276,7 +275,7 @@ function startOrdersChannel(){
     .on('postgres_changes', { event:'INSERT', schema:'public', table:'orders' },
       async () => {
         toast('🔔 وصل طلب جديد!');
-        loadOrdersCache();          // ★ الكاش يُحدَّث مع كل طلب — يبقى طازجاً
+        loadOrdersCache();
         if (document.querySelector('.tab[data-tab="orders"]')?.classList.contains('active')) {
           await renderOrders();
         } else {
@@ -291,6 +290,90 @@ let ordersCache = [];
 async function loadOrdersCache(){
   const { data } = await db.from('orders').select('*, order_items(*)').order('created_at', {ascending:false}).limit(50);
   ordersCache = data || [];
+}
+
+/* ═══════════ طلبات الخدمات ═══════════ */
+
+async function renderServiceRequests(){
+  const { data, error } = await db.from('service_requests')
+    .select('*')
+    .order('created_at', { ascending:false });
+  if (error) { console.error(error); return toast('تعذر تحميل طلبات الخدمات', true); }
+  const list = data || [];
+  updateSvcBadge(list);
+
+  if (!list.length) {
+    $('#tab-svc-requests').innerHTML = '<div class="a-card"><h3>📋 طلبات الخدمات</h3><p style="color:var(--muted)">لا توجد طلبات خدمات بعد — ستظهر هنا فور وصول أول طلب (تغليف أو ملء روائح) ✓</p></div>';
+    return;
+  }
+  $('#tab-svc-requests').innerHTML = list.map(svcReqHTML).join('');
+}
+
+function updateSvcBadge(list){
+  const n = list.filter(r => r.status === 'جديد').length;
+  const b = $('#svc-badge');
+  b.textContent = n;
+  b.style.display = n ? 'inline-grid' : 'none';
+}
+
+function svcReqHTML(r){
+  /* تفاصيل الحقول الموجودة فقط — كل خدمة تعرض ما يخصها */
+  const details = [];
+  if (r.gift_type)      details.push(['🎁 نوع الهدية', r.gift_type]);
+  if (r.recipient)      details.push(['👥 ممن يُهدى', r.recipient]);
+  if (r.packaging_type) details.push(['📦 نوع التغليف', r.packaging_type]);
+  if (r.packaging_size) details.push(['📏 حجم التغليف', r.packaging_size]);
+  if (r.perfume_type)   details.push(['🌸 نوع العطر', r.perfume_type]);
+  if (r.bottle_size)    details.push(['🧴 سعة الزجاجة', r.bottle_size]);
+
+  const detailRows = details.map(([k,v]) =>
+    `<div class="o-item"><span>${k}</span><b>${v}</b></div>`).join('');
+
+  const waPhone = r.phone.replace(/^0/, '213');
+  const actions = STATUS_FLOW[r.status] || [];
+  const btnLabel = s => s === 'مؤكد' ? '✓ تأكيد الطلب' : s === 'منجز' ? '✓ تم التنفيذ' : '✕ إلغاء';
+
+  return `
+  <div class="a-card order-card">
+    <div class="o-head">
+      <span class="s-badge" data-s="${r.status}">${r.status}</span>
+      <span class="o-date">${new Date(r.created_at).toLocaleString('ar-DZ')}</span>
+    </div>
+    <div class="o-cust">
+      <b>${r.customer_name}</b>
+      <a href="tel:${r.phone}">📞 ${r.phone}</a>
+      <a href="https://wa.me/${waPhone}" target="_blank" class="wa-link">واتساب 💬</a>
+    </div>
+    <div class="o-addr">🛎️ الخدمة المطلوبة: <b>${r.service_name}</b></div>
+    ${details.length ? `<div class="o-items">${detailRows}</div>` : ''}
+    ${actions.length ? `
+    <div class="o-actions">
+      ${actions.map(s => `<button class="o-btn ${s==='ملغي'?'danger':''}" onclick="setSvcStatus('${r.id}','${s}')">${btnLabel(s)}</button>`).join('')}
+    </div>` : ''}
+  </div>`;
+}
+
+async function setSvcStatus(id, status){
+  const { error } = await db.from('service_requests').update({ status }).eq('id', id);
+  if (error) return toast('تعذر التحديث: ' + error.message, true);
+  toast('حالة طلب الخدمة أصبحت: ' + status);
+  renderServiceRequests();
+}
+
+function startServiceRequestsChannel(){
+  if (svcChannel) return;
+  svcChannel = db.channel('admin-svc')
+    .on('postgres_changes', { event:'INSERT', schema:'public', table:'service_requests' },
+      async () => {
+        toast('🔔 وصل طلب خدمة جديد!');
+        if (document.querySelector('.tab[data-tab="svc-requests"]')?.classList.contains('active')) {
+          await renderServiceRequests();
+        } else {
+          const { data } = await db.from('service_requests').select('status');
+          updateSvcBadge(data || []);
+        }
+      })
+    .subscribe(status => console.log('🔌 بث طلبات الخدمات:', status));
 }
 
 /* ═══ إشعار ═══ */
