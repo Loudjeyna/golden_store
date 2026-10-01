@@ -3,8 +3,7 @@ const SUPABASE_URL = 'https://cqkbqcvjjrirbrkyodbv.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_vFSo6qX4xD4wLLSPPTJhLA_KSIslSqu';   // ← ★ Publishable key ★
 const OWNER_WHATSAPP = '213778663946';
 const MESSENGER_LINK = 'https://m.me/bloomstore16';
-
-let lastOrderMsg = '';   // نص آخر طلب — لاستخدامه في Messenger
+let lastOrderMsg = '';
 
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = s => document.querySelector(s);
@@ -17,7 +16,7 @@ const I18N = {
     heroTitle:'أهلاً بك في Golden Store 💝',
     heroSub:'هدايا وإكسسوارات — أحدث المنتجات بين يديك',
     heroBtn:'تصفح الأقسام',
-    heroServicesBtn:'خدماتنا ',
+    heroServicesBtn:'خدماتنا',
     catsTitle:'🗂️ الأقسام',
     recentTitle:'✨ وصل حديثاً',
     allCats:'الكل',
@@ -50,10 +49,9 @@ const I18N = {
     footer:'Golden Store © — جميع الحقوق محفوظة',
     currency:' دج',
     from:'من ',
-    sendFail:'تعذر إرسال الطلب، حاول مجدداً',
+    sendFail:'تعذر الإرسال، حاول مجدداً',
     loadFail:'تعذر تحميل المنتجات',
-    home:'العودة إلى الصفحة الرئيسية',
-    servicesTitle:' خدماتنا'
+    home:'العودة إلى الصفحة الرئيسية'
   },
   en: {
     dir:'ltr',
@@ -61,7 +59,7 @@ const I18N = {
     heroTitle:'Welcome to Golden Store 💝',
     heroSub:'Gifts & accessories — the latest products at your fingertips',
     heroBtn:'Browse Categories',
-    heroServicesBtn:'Our Services 🛎️',
+    heroServicesBtn:'Our Services',
     catsTitle:'🗂️ Categories',
     recentTitle:'✨ New Arrivals',
     allCats:'All',
@@ -94,10 +92,9 @@ const I18N = {
     footer:'Golden Store © — All rights reserved',
     currency:' DZD',
     from:'from ',
-    sendFail:'Failed to send the order, please try again',
+    sendFail:'Failed to send, please try again',
     loadFail:'Failed to load products',
-    home:'Back to home page',
-    servicesTitle:'🛎️ Our Services'
+    home:'Back to home page'
   }
 };
 
@@ -111,6 +108,7 @@ const ICONS = {
   'سماعات': `<svg viewBox="0 0 24 24" ${S}><path d="M4 17.5V13a8 8 0 0 1 16 0v4.5"/><rect x="3" y="14" width="4.5" height="7" rx="2"/><rect x="16.5" y="14" width="4.5" height="7" rx="2"/></svg>`,
   'إكسسوارات بنات': `<svg viewBox="0 0 24 24" ${S}><path d="M12 3.5l1.7 4.3 4.3 1.7-4.3 1.7L12 15.5l-1.7-4.3L6 9.5l4.3-1.7z"/><path d="M18.5 14.5l.9 2.1 2.1.9-2.1.9-.9 2.1-2.1-.9-2.1-.9 2.1-.9z"/><path d="M6 17l.7 1.6 1.6.7-1.6.7L6 21.6l-.7-1.6-1.6-.7 1.6-.7z"/></svg>`,
   'مجوهرات': `<svg viewBox="0 0 24 24" ${S}><path d="M7 3.5h10l4 5.5-9 12-9-12z"/><path d="M3 9h18M9.5 3.5 12 9l2.5-5.5M12 21 9.5 9M12 21l2.5-12"/></svg>`,
+  'إكسسوارات شعر': `<svg viewBox="0 0 24 24" ${S}><path d="M12 12 5.8 8.4C4.2 7.5 4.4 5 6.4 4.9 9.3 4.7 11.2 8.2 12 12z"/><path d="M12 12l6.2-3.6c1.6-.9 1.4-3.4-.6-3.5C14.7 4.7 12.8 8.2 12 12z"/><circle cx="12" cy="12" r="1.7"/><path d="M10.6 14.2c-1.3 2-2 3.9-1.6 6.3M13.4 14.2c1.3 2 2 3.9 1.6 6.3"/></svg>`,
   'ساعات رجالية': `<svg viewBox="0 0 24 24" ${S}><circle cx="12" cy="12" r="5.3"/><path d="M9.2 7l.6-4.2h4.4L14.8 7M9.2 17l.6 4.2h4.4l.6-4.2"/><path d="M12 9.6V12l1.7 1.1"/></svg>`,
   'ساعات نسائية': `<svg viewBox="0 0 24 24" ${S}><circle cx="12" cy="12" r="5.3"/><path d="M9.2 7l.6-4.2h4.4L14.8 7M9.2 17l.6 4.2h4.4l.6-4.2"/><path d="M12 9.6V12l1.7 1.1"/></svg>`,
   'أساور': `<svg viewBox="0 0 24 24" ${S}><rect x="2.8" y="14.2" width="8.6" height="5.6" rx="2.8" transform="rotate(-45 7.1 17)"/><rect x="12.6" y="4.2" width="8.6" height="5.6" rx="2.8" transform="rotate(-45 16.9 7)"/><path d="M9.5 14.5l5-5"/></svg>`,
@@ -146,9 +144,7 @@ function applyLang(){
   $('#lang-btn').textContent   = lang === 'ar' ? 'EN' : 'ع';
   document.querySelector('.logo')?.setAttribute('aria-label', L.home);
   if (loaded) renderPage();
-
 }
-
 function toggleLang(){
   lang = lang === 'ar' ? 'en' : 'ar';
   localStorage.setItem('store_lang', lang);
@@ -156,7 +152,7 @@ function toggleLang(){
 }
 
 /* ═══ الحالة ═══ */
-let products = [], cats = [], services = [], loaded = false;
+let products = [], cats = [], loaded = false;
 let view = 'home', catId = null, subId = null;
 let current = null, selVariant = 0, qty = 1;
 let cart = JSON.parse(localStorage.getItem('dz_cart') || '[]');
@@ -175,22 +171,19 @@ const catLabel = p => {
 
 /* ═══ التحميل ═══ */
 async function loadAll(){
-  const [cRes, pRes, sRes] = await Promise.all([
+  const [cRes, pRes] = await Promise.all([
     db.from('categories').select('*').order('sort_order'),
-    db.from('products').select('*, product_variants(*)').eq('is_active', true).order('created_at', { ascending:false }),
-    db.from('services').select('*').eq('is_active', true)
+    db.from('products').select('*, product_variants(*)').eq('is_active', true).order('created_at', { ascending:false })
   ]);
   if (cRes.error) console.error(cRes.error);
   if (pRes.error) console.error(pRes.error);
-  if (sRes.error) console.error(sRes.error);
   cats = cRes.data || [];
   products = pRes.data || [];
-  services = sRes.data || [];
   loaded = true;
   renderPage();
 }
 
-function renderPage(){ renderCatGrid(); renderSubArea(); renderShop(); renderServices(); renderCartBadge(); }
+function renderPage(){ renderCatGrid(); renderSubArea(); renderShop(); renderCartBadge(); }
 
 function renderCatGrid(){
   const cards = mainCats().map(c => `
@@ -200,7 +193,7 @@ function renderCatGrid(){
         : `<div class="ph">${icon(c.name)}</div>`}
       <div class="ov"><b>${c.name}</b></div>
     </div>`).join('');
-    $('#cat-grid').innerHTML = `
+  $('#cat-grid').innerHTML = `
     <div class="cat-strip">
       <div class="cat-track">${cards}${cards}</div>
     </div>`;
@@ -375,33 +368,20 @@ function cQty(ix,d){
 }
 function cDel(ix){ cart.splice(ix,1); saveCart(); renderCart(); }
 
-/* ═══ رسالة الطلب — فاتورة منسقة لواتساب و Messenger ═══ */
+/* ═══ رسالة الطلب — فاتورة منسقة ═══ */
 function buildOrderMessage(orderId, customer){
   const L = lang === 'ar';
   const sep = '━━━━━━━━━━━━━━━';
-
   const items = cart.map(i =>
     L
-    ? `▪️ *${i.name}*${i.label ? ' — ' + i.label : ''}\n` +
-      `      الكمية: ${i.qty}  •  ${money(i.price * i.qty)}`
-    : `▪️ *${i.name}*${i.label ? ' — ' + i.label : ''}\n` +
-      `      Qty: ${i.qty}  •  ${money(i.price * i.qty)}`
+    ? `▪️ *${i.name}*${i.label ? ' — ' + i.label : ''}\n      الكمية: ${i.qty}  •  ${money(i.price * i.qty)}`
+    : `▪️ *${i.name}*${i.label ? ' — ' + i.label : ''}\n      Qty: ${i.qty}  •  ${money(i.price * i.qty)}`
   ).join('\n\n');
-
   const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
   const notes = customer.notes ? `\n📝 ${customer.notes}` : '';
-
   return L
-    ? `🛍️ *طلب جديد — Golden Store*\n${sep}\n\n` +
-      `🧾 رقم الطلب: *${orderId.slice(0,8)}*\n\n` +
-      `👤 ${customer.customer_name}\n📞 ${customer.phone}\n📍 ${customer.address}${notes}\n\n` +
-      `${sep}\n🛒 *المنتجات:*\n\n${items}\n\n${sep}\n` +
-      `💰 *المجموع: ${money(total)}*`
-    : `🛍️ *New order — Golden Store*\n${sep}\n\n` +
-      `🧾 Order #: *${orderId.slice(0,8)}*\n\n` +
-      `👤 ${customer.customer_name}\n📞 ${customer.phone}\n📍 ${customer.address}${notes}\n\n` +
-      `${sep}\n🛒 *Products:*\n\n${items}\n\n${sep}\n` +
-      `💰 *Total: ${money(total)}*`;
+    ? `🛍️ *طلب جديد — Golden Store*\n${sep}\n\n🧾 رقم الطلب: *${orderId.slice(0,8)}*\n\n👤 ${customer.customer_name}\n📞 ${customer.phone}\n📍 ${customer.address}${notes}\n\n${sep}\n🛒 *المنتجات:*\n\n${items}\n\n${sep}\n💰 *المجموع: ${money(total)}*`
+    : `🛍️ *New order — Golden Store*\n${sep}\n\n🧾 Order #: *${orderId.slice(0,8)}*\n\n👤 ${customer.customer_name}\n📞 ${customer.phone}\n📍 ${customer.address}${notes}\n\n${sep}\n🛒 *Products:*\n\n${items}\n\n${sep}\n💰 *Total: ${money(total)}*`;
 }
 
 function renderCart(){
@@ -489,7 +469,6 @@ async function checkout(e){
   showToast(t('orderArrived'));
 }
 
-/* ★ Messenger: نسخ التفاصيل ثم فتح المحادثة — ★ showToast وليس toast! */
 async function openMessenger(){
   if (!lastOrderMsg) return;
   try {
@@ -501,41 +480,9 @@ async function openMessenger(){
   window.open(MESSENGER_LINK, '_blank');
 }
 
-
-
 function closeOrderDone(){
   toggleCart(false);
   renderCart();
-}
-
-/* ═══ الخدمات ═══ */
-function renderServices(){
-  const grid = $('#services-grid');
-  if (!grid) return;
-  if (!services.length) { grid.innerHTML = ''; return; }
-  grid.innerHTML = services.map(s => `
-    <div class="service-card">
-      <div class="service-img">
-        ${s.image_url
-          ? `<img src="${imgURL(s.image_url)}" alt="${s.name}" loading="lazy" onerror="this.remove()">`
-          : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 3c0 7.2 3.4 11.5 7.5 11.5s7.5-4.3 7.5-11.5"/><path d="M12 14.5v2.3"/><path d="m12 21-2.1-2.9L12 15l2.1 3.1z"/></svg>`}
-      </div>
-      <div class="service-body">
-        <h3>${s.name}</h3>
-        <p>${s.description || ''}</p>
-        <div class="service-foot">
-          <b>${s.price ? money(s.price) : (lang==='ar' ? 'حسب الطلب' : 'Price on request')}</b>
-          <button class="service-btn" onclick="orderService(${s.id})">${lang==='ar' ? 'اطلب الخدمة' : 'Request Service'}</button>
-        </div>
-      </div>
-    </div>`).join('');
-}
-
-function orderService(id){
-  const s = services.find(x => x.id === id);
-  if (!s) return;
-  const msg = encodeURIComponent(lang==='ar' ? `مرحباً، أريد طلب خدمة: ${s.name}` : `Hello, I would like to request a service: ${s.name}`);
-  window.open(`https://wa.me/${OWNER_WHATSAPP}?text=${msg}`, '_blank');
 }
 
 /* ═══ إشعارات ═══ */
@@ -553,4 +500,4 @@ db.channel('store')
   .on('postgres_changes', { event:'*', schema:'public', table:'product_variants' }, loadAll)
   .on('postgres_changes', { event:'*', schema:'public', table:'categories' }, loadAll)
   .subscribe(status => console.log('🔌 حالة البث:', status));
-setInterval(loadAll, 30000);
+setInterval(loadAll, 1000);

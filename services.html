@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خدماتنا — Golden Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="services.css">
+<link rel="icon" href="images/logo.png" type="image/png">
+</head>
+<body class="svc-page">
+
+<header>
+  <div class="header-in">
+    <a class="logo" href="index.html" aria-label="العودة إلى الصفحة الرئيسية">
+      <img src="images/logo.png" alt="Golden Store">
+    </a>
+    <div class="header-actions">
+      <a class="fb-btn" href="https://www.facebook.com/profile.php?id=61552913377312" target="_blank" rel="noopener" aria-label="صفحتنا على فيسبوك">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+      <a class="lang-btn" href="index.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center" aria-label="العودة إلى الصفحة الرئيسية">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px"><path d="M3.5 10.5 12 3.5l8.5 7"/><path d="M5.5 9.5V19a1.5 1.5 0 0 0 1.5 1.5h3.5V14h3v6.5H17A1.5 1.5 0 0 0 18.5 19V9.5"/></svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+<section class="svc-hero">
+  <h1>خدمات Golden Store</h1>
+  <p>لمسات مختصة تصنع الفرق — اختر خدمتك وسننجزها لك بعناية</p>
+</section>
+
+<div id="svc-list" class="svc-wrap">
+  <div class="a-card" style="text-align:center;color:var(--muted);padding:40px">جاري تحميل الخدمات...</div>
+</div>
+
+<div id="svc-form-sec" class="svc-form-sec" style="display:none">
+  <div class="svc-form-box" id="svc-form-box"></div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ═══ إعدادات ═══ */
+const SUPABASE_URL = 'https://cqkbqcvjjrirbrkyodbv.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_vFSo6qX4xD4wLLSPPTJhLA_KSIslSqu';
+const OWNER_WHATSAPP = '213778663946';
+
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const $ = s => document.querySelector(s);
+const money = n => Number(n).toLocaleString('en-US') + ' دج';
+
+/* ═══ الخيارات ═══ */
+const WRAP_OPTIONS = {
+  giftTypes:  ['سجادة صلاة', 'دبدوب', 'عطر', 'ساعة فخمة', 'كرة ثلجية', 'أخرى'],
+  recipients: ['للرجال', 'للنساء'],
+  packagings: ['كيس هدية', 'علبة هدية'],
+  packSizes:  ['صغير', 'متوسط', 'كبير']
+};
+const PERFUME_OPTIONS = {
+  women: ['روز فواح', 'ياسمين ليلي', 'فانيلا دافئة'],
+  men:   ['عود ملكي', 'مسك أبيض', 'أرز خشبي'],
+  sizes: ['10 مل', '20 مل', '30 مل']
+};
+
+let services = [], svcCurrent = null;
+let picks = {};
+
+const svcKind = s => s.name.includes('نسائي') ? 'fill-w'
+                 : s.name.includes('رجالي') ? 'fill-m' : 'gift';
+
+/* ★ أيقونات SVG احتياطية */
+const svcIcon = s => {
+  if (s.name.includes('ملء')) {
+    return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="9.5" width="12" height="11" rx="2.5"/><path d="M10 9.5V7a1.5 1.5 0 0 1 1.5-1.5h1A1.5 1.5 0 0 1 14 7v2.5"/><path d="M12 2.5v3"/></svg>`;
+  }
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1.2"/><path d="M5 12v7.5A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V12"/><path d="M12 8v13"/><path d="M12 8s-1.6-4.2-4.2-4.2a2.1 2.1 0 0 0 0 4.2"/><path d="M12 8s1.6-4.2 4.2-4.2a2.1 2.1 0 0 1 0 4.2"/></svg>`;
+};
+
+/* ★ خريطة الصور — مطابقة حرفية لأسماء القاعدة */
+const SVC_IMAGES = {
+  'تغليف الهدايا':        '/images/svc-wrapping.jpg',
+  'ملء الروائح — نسائي':  '/images/svc-women.jpg',
+  'ملء الروائح — رجالي':  '/images/svc-men.jpg'
+};
+
+/* ═══ التحميل والعرض ═══ */
+async function loadServices(){
+  const { data } = await db.from('services').select('*').eq('is_active', true);
+  services = data || [];
+  $('#svc-list').innerHTML = services.map((s, i) => `
+    <div class="svc-banner ${i % 2 ? 'flip' : ''} ${s.name.includes('نسائي') ? 'tint-pink' : ''}">
+      <div class="svc-banner-img">${SVC_IMAGES[s.name]
+        ? `<img src="${SVC_IMAGES[s.name]}" alt="${s.name}" loading="lazy" onerror="this.parentElement.innerHTML='🎁'">`
+        : svcIcon(s)}</div>
+      <div class="svc-banner-body">
+        <h2>${s.name}</h2>
+        <p>${s.description || ''}</p>
+        <div class="svc-banner-foot">
+          <b>${s.price ? money(s.price) : 'حسب الطلب'}</b>
+          <button class="svc-banner-btn" onclick="openForm(${s.id})">اطلب الخدمة ←</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+/* ═══ نموذج الطلب ═══ */
+function openForm(id){
+  const s = services.find(x => x.id === id);
+  if (!s) return;
+  svcCurrent = s;
+  picks = {};
+  const kind = svcKind(s);
+
+  let pickers = '';
+  if (kind === 'gift') {
+    pickers = secGroup('🎁 نوع الهدية', WRAP_OPTIONS.giftTypes, 'gift')
+            + secGroup('👥 ممن يُهدى', WRAP_OPTIONS.recipients, 'recipient')
+            + secGroup('📦 نوع التغليف', WRAP_OPTIONS.packagings, 'packaging')
+            + secGroup('📏 حجم التغليف', WRAP_OPTIONS.packSizes, 'size');
+  } else {
+    const list = kind === 'fill-w' ? PERFUME_OPTIONS.women : PERFUME_OPTIONS.men;
+    pickers = secGroup('🌸 نوع العطر', list, 'perfume')
+            + secGroup('🧴 سعة الزجاجة', PERFUME_OPTIONS.sizes, 'size');
+  }
+
+  $('#svc-form-box').innerHTML = `
+    <span class="card-cat">✨ طلب خدمة</span>
+    <h2>${s.name}</h2>
+    <p class="m-desc">${s.description || ''}</p>
+    ${pickers}
+    <form class="svc-form" onsubmit="submitRequest(event)">
+      <input name="name" placeholder="الاسم الكامل" required>
+      <input name="phone" type="tel" placeholder="رقم الهاتف" required>
+      <button class="svc-send">📨 إرسال الطلب</button>
+    </form>`;
+  $('#svc-form-sec').style.display = 'block';
+  $('#svc-form-sec').scrollIntoView({behavior:'smooth'});
+}
+
+/* ★ النقر يضيء الأزرار مباشرة — بلا إعادة بناء النموذج */
+function pick(group, i){
+  picks[group] = i;
+  document.querySelectorAll(`[data-group="${group}"] .chip`)
+    .forEach((btn, idx) => btn.classList.toggle('active', idx === i));
+}
+
+function secGroup(title, list, group){
+  return `
+    <div class="svc-sec-title">${title}</div>
+    <div class="chips" data-group="${group}">
+      ${list.map((v,i)=>`<button type="button" class="chip" onclick="pick('${group}',${i})">${v}</button>`).join('')}
+    </div>`;
+}
+
+/* ═══ الإرسال ═══ */
+async function submitRequest(e){
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const btn = e.target.querySelector('.svc-send');
+  btn.disabled = true; btn.textContent = 'جاري الإرسال...';
+  const kind = svcKind(svcCurrent);
+
+  const LABELS = kind === 'gift'
+    ? { gift:'نوع الهدية', recipient:'ممن يُهدى', packaging:'نوع التغليف', size:'حجم التغليف' }
+    : { perfume:'نوع العطر', size:'سعة الزجاجة' };
+  const missing = Object.keys(LABELS).find(g => picks[g] === undefined);
+  if (missing) {
+    toast(`اختر: ${LABELS[missing]} ✓`, true);
+    btn.disabled = false; btn.textContent = '📨 إرسال الطلب';
+    return;
+  }
+
+  const payload = {
+    service_id: svcCurrent.id,
+    service_name: svcCurrent.name,
+    customer_name: fd.get('name'),
+    phone: fd.get('phone')
+  };
+
+  if (kind === 'gift') {
+    payload.gift_type      = WRAP_OPTIONS.giftTypes[picks.gift];
+    payload.recipient      = WRAP_OPTIONS.recipients[picks.recipient];
+    payload.packaging_type = WRAP_OPTIONS.packagings[picks.packaging];
+    payload.packaging_size = WRAP_OPTIONS.packSizes[picks.size];
+  } else {
+    payload.perfume_type = kind === 'fill-w'
+      ? PERFUME_OPTIONS.women[picks.perfume]
+      : PERFUME_OPTIONS.men[picks.perfume];
+    payload.bottle_size  = PERFUME_OPTIONS.sizes[picks.size];
+  }
+
+  const { error } = await db.from('service_requests').insert(payload);
+  if (error) { console.error(error); toast('تعذر الإرسال، حاول مجدداً', true);
+    btn.disabled=false; btn.textContent='📨 إرسال الطلب'; return; }
+
+  const msg = buildServiceMsg(payload);
+  $('#svc-form-box').innerHTML = `
+    <div class="success" style="padding:20px 0">
+      <div class="success-emoji">🎉</div>
+      <h3>تم استلام طلب الخدمة!</h3>
+      <p>سنتصل بك قريباً لتأكيد التفاصيل.</p>
+      <div class="success-actions">
+        <a class="wa-big" href="https://wa.me/${OWNER_WHATSAPP}?text=${encodeURIComponent(msg)}"
+           target="_blank" rel="noopener">💬 أكمل عبر واتساب</a>
+        <button class="done-btn" onclick="hideForm()">✓ تم</button>
+      </div>
+    </div>`;
+  toast('✓ وصل طلب الخدمة');
+}
+
+function buildServiceMsg(p){
+  let m = `🛎️ *طلب خدمة — Golden Store*\n\n🛎️ الخدمة: *${p.service_name}*\n`;
+  if (p.gift_type)      m += `🎁 نوع الهدية: ${p.gift_type}\n`;
+  if (p.recipient)      m += `👥 ممن يُهدى: ${p.recipient}\n`;
+  if (p.packaging_type) m += `📦 التغليف: ${p.packaging_type}\n`;
+  if (p.packaging_size) m += `📏 الحجم: ${p.packaging_size}\n`;
+  if (p.perfume_type)   m += `🌸 نوع العطر: ${p.perfume_type}\n`;
+  if (p.bottle_size)    m += `🧴 السعة: ${p.bottle_size}\n`;
+  return m + `\n👤 ${p.customer_name}\n📞 ${p.phone}\n\n(الطلب مسجل في الموقع)`;
+}
+
+function hideForm(){ $('#svc-form-sec').style.display = 'none'; }
+
+/* ═══ إشعار ═══ */
+let toastT;
+function toast(msg, err=false){
+  const t = $('#toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (err ? ' err' : '');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+loadServices();
+</script>
+</body>
+</html>
