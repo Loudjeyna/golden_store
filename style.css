@@ -65,7 +65,12 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop
 .cat-strip{overflow:hidden;position:relative;padding:4px 0;
            width:100vw;margin-inline:calc(50% - 50vw)}   /* ★ يكسر القفص */
 .cat-track{display:flex;gap:16px;width:max-content;animation:marquee 22s linear infinite}
+.cat-strip{overflow:hidden;position:relative;padding:4px 0;
+           width:100vw;margin-inline:calc(50% - 50vw)}
+.cat-track{display:flex;gap:16px;width:max-content;animation:marquee 22s linear infinite}
 .cat-strip:hover .cat-track{animation-play-state:paused}
+[dir="ltr"] .cat-track{animation-direction:reverse}
+@keyframes marquee{to{transform:translateX(50%)}}
 [dir="ltr"] .cat-track{animation-direction:reverse}
 @keyframes marquee{to{transform:translateX(50%)}}
 
@@ -419,4 +424,14 @@ footer{text-align:center;padding:26px;color:var(--muted);font-size:.85rem;border
 @media(max-width:680px){
   .svc-ic{width:44px;height:44px}
   .svc-ic svg{width:22px;height:22px}
+}
+/* ═══ بانر اللوجو الفاخر ═══ */
+.hero{padding-top:28px}
+.hero-banner{max-width:1400px;margin:0 auto 18px;padding:0 20px}
+.hero-banner img{width:100%;display:block;border-radius:20px;
+  border:2px solid rgba(212,175,55,.55);   /* ★ حواف ذهبية */
+  box-shadow:0 12px 40px rgba(0,0,0,.45)}
+@media(max-width:680px){
+  .hero-banner{padding:0 14px}
+  .hero-banner img{border-radius:14px}
 }
