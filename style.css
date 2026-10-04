@@ -426,12 +426,31 @@ footer{text-align:center;padding:26px;color:var(--muted);font-size:.85rem;border
   .svc-ic svg{width:22px;height:22px}
 }
 /* ═══ بانر اللوجو الفاخر ═══ */
-.hero{padding-top:28px}
-.hero-banner{max-width:1400px;margin:0 auto 18px;padding:0 20px}
-.hero-banner img{width:100%;display:block;border-radius:20px;
-  border:2px solid rgba(212,175,55,.55);   /* ★ حواف ذهبية */
-  box-shadow:0 12px 40px rgba(0,0,0,.45)}
+/* ═══ بانر اللوجو الفاخر — حجم معتدل ═══ */
+.hero{padding-top:24px}
+.hero-banner{max-width:320px;margin:0 auto 12px;padding:0 12px}
+.hero-banner img{width:100%;height:220px;object-fit:cover;object-position:center;
+  display:block;border-radius:18px;
+  border:2px solid rgba(212,175,55,.55);
+  box-shadow:0 10px 30px rgba(0,0,0,.35)}
 @media(max-width:680px){
   .hero-banner{padding:0 14px}
-  .hero-banner img{border-radius:14px}
+  .hero-banner img{height:150px;border-radius:14px}
+}
+/* ═══ البانر المزدوج: لوجو جانب النص ═══ */
+/* ═══ البانر المزدوج: لوجو جانب النص ═══ */
+.hero-split{max-width:1400px;margin:auto;display:grid;
+  grid-template-columns:1fr 1fr;gap:40px;align-items:center;
+  padding:36px 20px 26px}
+.hero-media img{width:100%;max-width:540px;aspect-ratio:1/0.75;
+  object-fit:cover;object-position:center 30%;   /* ★ يقص الأسود الفارغ أسفل اللوجو */
+  border-radius:20px;
+  border:2px solid rgba(212,175,55,.55);
+  box-shadow:0 12px 36px rgba(0,0,0,.4);display:block;
+  margin:auto}                                    /* توسيط اللوجو في عموده */
+.hero-text{text-align:center}                     /* ★ توسيط النص — توازن مع اللوجو */
+
+@media(max-width:680px){
+  .hero-split{grid-template-columns:1fr;gap:22px;padding:22px 16px}
+  .hero-media img{max-width:260px}
 }
