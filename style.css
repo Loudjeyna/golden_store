@@ -1,29 +1,23 @@
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --primary:#2563EB;
-  --primary-dark:#1E40AF;
+  --primary:#2563EB; --primary-dark:#1E40AF;
   --gold:#93C5FD;
-  --dark:#0F172A;
-  --text:#1E293B;
-  --muted:#64748B;
-  --bg:#F8FAFC;
-  --line:#E2E8F0;
-  --danger:#DC2626;
-  --success:#059669;
+  --dark:#0F172A; --text:#1E293B; --muted:#64748B;
+  --bg:#F8FAFC; --line:#E2E8F0;
+  --danger:#DC2626; --success:#059669;
   --radius:18px;
   --shadow:0 4px 20px rgba(15,23,42,.08);
   --shadow-h:0 16px 38px rgba(15,23,42,.16);
 }
-body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden} /* ★ شبكة أمان */
+body{font-family:'Cairo',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
 ::selection{background:var(--gold)}
 button{font-family:inherit;cursor:pointer}
 img{display:block;max-width:100%}
 
-/* ═══ الهيدر — ★ 1400 ═══ */
+/* ═══ الهيدر ═══ */
 header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .header-in{max-width:1400px;margin:auto;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 
-/* الشعار: قرص دائري مباشر */
 .logo{display:inline-flex;align-items:center;text-decoration:none;
       background:none;border:none;padding:0;box-shadow:none;
       transition:opacity .25s,transform .25s}
@@ -32,7 +26,6 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop
 .logo:hover{opacity:.85;transform:scale(1.05)}
 .logo:active{transform:scale(.96)}
 
-/* زر السلة */
 .cart-btn{position:relative;width:46px;height:46px;border-radius:50%;
           border:1px solid var(--line);background:#fff;font-size:1.15rem;
           box-shadow:0 2px 10px rgba(15,23,42,.06);
@@ -43,38 +36,42 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop
             font-size:.72rem;font-weight:800;display:grid;place-items:center;
             padding:0 6px;border:2px solid #fff;box-shadow:0 2px 8px rgba(37,99,235,.4)}
 
-/* ═══ البانر ═══ */
-.hero{text-align:center;padding:58px 20px 34px;background:linear-gradient(180deg,#EAF2FE,transparent)}
+/* ═══ البانر — لوجو كعلامة مائية (contain = اللوجو كامل في مكانه) ═══ */
+.hero{
+  position:relative;
+  text-align:center;
+  padding:90px 20px 54px;
+  background:
+      linear-gradient(180deg,
+      rgba(248,250,252,.90),
+      rgba(248,250,252,.72) 75%,
+      rgba(248,250,252,.90)),
+    url('images/hero_back.png') center/contain no-repeat,
+    #F8FAFC;
+  border-bottom:1px solid var(--line)}
 .hero h1{font-size:2.1rem;color:var(--dark)}
 .hero p{color:var(--muted);margin-top:6px}
 .hero .go{padding:12px 34px;border:none;border-radius:999px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-weight:800;font-size:1rem;box-shadow:0 8px 22px rgba(37,99,235,.4);transition:box-shadow .25s}
 .hero .go:hover{box-shadow:0 14px 30px rgba(37,99,235,.5)}
 .hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px}
-/* انسخي فوق قاعدة .go.ghost — وللتجربة فقط */
-.go.ghost{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border:none}
-.go.ghost{background:#fff;color:var(--primary-dark);border:2px solid var(--primary);
+.go.ghost{background:rgba(255,255,255,.85);color:var(--primary-dark);border:2px solid var(--primary);
           box-shadow:0 4px 14px rgba(37,99,235,.12)}
-
 .go.ghost:hover{box-shadow:0 8px 20px rgba(37,99,235,.25)}
-/* ═══ أقسام الصفحة — ★ 1400 ═══ */
+
+/* ═══ أقسام الصفحة ═══ */
 .sec{max-width:1400px;margin:auto;padding:30px 20px 6px}
 .sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
 .sec-head h2{font-size:1.35rem;color:var(--dark)}
 
-/* ═══ شريط الأقسام — ★ full-bleed + بطاقات أكبر ═══ */
-.cat-strip{overflow:hidden;position:relative;padding:4px 0;
-           width:100vw;margin-inline:calc(50% - 50vw)}   /* ★ يكسر القفص */
-.cat-track{display:flex;gap:16px;width:max-content;animation:marquee 22s linear infinite}
+/* ═══ شريط الأقسام ═══ */
 .cat-strip{overflow:hidden;position:relative;padding:4px 0;
            width:100vw;margin-inline:calc(50% - 50vw)}
-.cat-track{display:flex;gap:16px;width:max-content;animation:marquee 22s linear infinite}
+.cat-track{display:flex;gap:16px;width:max-content;animation:marquee 22s linear infinite;will-change:transform}
 .cat-strip:hover .cat-track{animation-play-state:paused}
 [dir="ltr"] .cat-track{animation-direction:reverse}
 @keyframes marquee{to{transform:translateX(50%)}}
-[dir="ltr"] .cat-track{animation-direction:reverse}
-@keyframes marquee{to{transform:translateX(50%)}}
 
-.cat-card{flex:0 0 auto;width:280px;aspect-ratio:4/3;position:relative;   /* ★ 280 */
+.cat-card{flex:0 0 auto;width:280px;aspect-ratio:4/3;position:relative;
           border-radius:20px;overflow:hidden;cursor:pointer;
           border:3px solid transparent;background:linear-gradient(135deg,#E8F0FE,#DBEAFE);
           box-shadow:var(--shadow);transition:box-shadow .3s,border-color .3s}
@@ -103,7 +100,7 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop
 .crumb button:hover{border-color:var(--primary)}
 .crumb .cur{color:var(--primary-dark);font-weight:800}
 
-/* ═══ شبكة المنتجات — ★ 1400 + 320 ═══ */
+/* ═══ شبكة المنتجات ═══ */
 main{max-width:1400px;margin:auto;padding:0 20px 60px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px}
 
@@ -130,6 +127,7 @@ main{max-width:1400px;margin:auto;padding:0 20px 60px}
 .overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(5px);z-index:100;display:none;place-items:center;padding:16px}
 .overlay.open{display:grid;animation:fade .25s}
 .modal{background:#fff;border-radius:24px;max-width:780px;width:100%;max-height:90vh;overflow-y:auto;display:grid;grid-template-columns:1fr 1.1fr;position:relative;animation:up .3s}
+.modal.single{grid-template-columns:1fr}
 .m-close{position:absolute;top:14px;inset-inline-end:14px;width:36px;height:36px;border-radius:50%;border:none;background:#E2E8F0;font-size:1rem;z-index:3;transition:background .2s}
 .m-close:hover{background:var(--danger);color:#fff}
 .m-img{min-height:320px;position:relative}
@@ -180,13 +178,10 @@ main{max-width:1400px;margin:auto;padding:0 20px 60px}
 form input,form textarea{width:100%;padding:12px 14px;border:2px solid var(--line);border-radius:12px;font-family:inherit;font-size:.93rem;margin-bottom:10px;background:#F8FAFC;transition:border-color .2s;resize:none}
 form input:focus,form textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
 .success{text-align:center;padding:50px 10px}
-.success div{font-size:3.4rem;margin-bottom:10px}
-/* ═══ شاشة نجاح الطلب ═══ */
 .success-emoji{font-size:3.2rem;margin-bottom:8px}
 .order-ref{background:#EFF6FF;border:1.5px dashed var(--primary);border-radius:12px;
   padding:10px 16px;margin:16px 0 18px;color:var(--dark);font-size:.92rem}
 .order-ref b{color:var(--primary-dark);letter-spacing:1.5px;font-size:1.02rem}
-
 .success-actions{display:flex;flex-direction:column;gap:10px;margin-top:4px}
 .wa-big{display:flex;align-items:center;justify-content:center;gap:10px;
   padding:14px;border-radius:14px;background:#25D366;color:#fff;
@@ -194,11 +189,11 @@ form input:focus,form textarea:focus{outline:none;border-color:var(--primary);bo
   box-shadow:0 6px 18px rgba(37,211,102,.35);transition:transform .2s,box-shadow .2s}
 .wa-big:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(37,211,102,.45)}
 .wa-big svg{width:22px;height:22px;fill:#fff;flex-shrink:0}
-
 .done-btn{width:100%;background:none;border:none;color:var(--muted);
   font-weight:700;font-family:inherit;font-size:.9rem;padding:12px;cursor:pointer;
   transition:color .2s}
 .done-btn:hover{color:var(--dark)}
+
 /* ═══ إشعارات وفوتر ═══ */
 .toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,90px);background:var(--dark);color:#fff;padding:13px 26px;border-radius:999px;font-weight:700;font-size:.92rem;opacity:0;transition:transform .35s,opacity .35s;z-index:200;box-shadow:0 10px 30px rgba(0,0,0,.25)}
 .toast.show{transform:translate(-50%,0);opacity:1}
@@ -215,7 +210,6 @@ footer{text-align:center;padding:26px;color:var(--muted);font-size:.85rem;border
           transition:border-color .25s,box-shadow .25s}
 .lang-btn:hover{border-color:var(--primary);box-shadow:0 4px 16px rgba(37,99,235,.18)}
 
-/* السلة تنزلق من اليمين في النسخة الإنجليزية */
 [dir="ltr"] .drawer{left:auto;right:0;transform:translateX(105%)}
 [dir="ltr"] .drawer.open{transform:none}
 
@@ -234,11 +228,38 @@ footer{text-align:center;padding:26px;color:var(--muted);font-size:.85rem;border
 .sq svg{width:42px;height:42px;color:var(--primary-dark)}
 .crumb .cur .cat-ic{color:var(--primary-dark)}
 
-/* ═══ الموبايل — كتلة واحدة موحدة ═══ */
+/* ═══ الخدمات ═══ */
+.service-btn{padding:9px 18px;border:none;border-radius:999px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-weight:800;font-size:.88rem;transition:box-shadow .25s}
+.service-btn:hover{box-shadow:0 6px 16px rgba(37,99,235,.4)}
+
+/* ═══ روابط التواصل في الفوتر ═══ */
+.footer-social{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.social-link{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;
+  border-radius:999px;font-size:.85rem;font-weight:700;text-decoration:none;
+  border:1px solid var(--line);background:#fff;color:var(--text);
+  transition:transform .2s,box-shadow .2s}
+.social-link svg{width:16px;height:16px}
+.social-link:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(15,23,42,.12)}
+.social-link.fb{color:#1877F2}
+.social-link.fb:hover{border-color:#1877F2}
+.social-link.msgr{color:#A334FA}
+.social-link.msgr:hover{border-color:#A334FA}
+.social-link.wapp{color:#25D366}
+.social-link.wapp:hover{border-color:#25D366}
+.msgr-big{display:flex;align-items:center;justify-content:center;gap:10px;
+  width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#A334FA,#7A0BC0);
+  color:#fff;font-weight:800;font-size:1rem;border:none;cursor:pointer;font-family:inherit;
+  box-shadow:0 6px 18px rgba(163,52,250,.3);transition:transform .2s,box-shadow .2s}
+.msgr-big:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(163,52,250,.4)}
+.msgr-big svg{width:22px;height:22px;fill:#fff;flex-shrink:0}
+
+/* ═══ الموبايل — كتلة واحدة ═══ */
 @media(max-width:680px){
   .header-in{padding:8px 14px}
   .logo img{height:36px;width:36px}
   .cart-btn{width:42px;height:42px}
+  .fb-btn{width:42px;height:42px}
+  .fb-btn svg{width:18px;height:18px}
   .header-actions{gap:8px}
   .lang-btn{height:42px;min-width:42px;padding:0 12px;font-size:.85rem}
 
@@ -250,10 +271,8 @@ footer{text-align:center;padding:26px;color:var(--muted);font-size:.85rem;border
   .sec{padding:22px 14px 4px}
   .sec-head h2{font-size:1.1rem}
 
-  /* ★ لا حاجة لمسافة سالبة — 100vw تتكفل */
   .cat-card{width:160px}
   .cat-card .ov b{font-size:.9rem}
-
   .sub-card .sq{width:84px;height:84px;font-size:2rem}
   .sub-card{width:84px}
 
@@ -277,180 +296,17 @@ footer{text-align:center;padding:26px;color:var(--muted);font-size:.85rem;border
 
   .ph svg{width:44px;height:44px}
   .sq svg{width:34px;height:34px}
-}/* ═══ الهاتف: الناقل يتحول لمسح يدوي ═══ */
+}
+
+/* ═══ الهاتف اللمسي: الناقل سحب يدوي ═══ */
 @media(hover:none) and (pointer:coarse){
   .cat-strip{
-    overflow-x:auto;                     /* ★ القافس الأب هو من يتمرر */
-    -webkit-overflow-scrolling:touch;    /* انسيابية iOS */
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
     scroll-snap-type:x proximity;
-    scrollbar-width:none;                /* إخفاء شريط التمرير */
+    scrollbar-width:none;
   }
   .cat-strip::-webkit-scrollbar{display:none}
-  .cat-track{
-    animation:none !important;           /* إيقاف الدوران التلقائي */
-  }
+  .cat-track{animation:none !important}
   .cat-card{scroll-snap-align:center}
-}
-/* ═══ الخدمات ═══ */
-.services-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
-.service-card{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:box-shadow .3s}
-.service-card:hover{box-shadow:var(--shadow-h)}
-.service-img{height:170px;position:relative;overflow:hidden;background:linear-gradient(135deg,#E8F0FE,#DBEAFE)}
-.service-img img{width:100%;height:100%;object-fit:cover}
-.service-img svg{width:56px;height:56px;color:var(--primary-dark);opacity:.6;position:absolute;inset:0;margin:auto}
-.service-body{padding:16px}
-.service-body h3{color:var(--dark);font-size:1.05rem;margin-bottom:6px}
-.service-body p{color:var(--muted);font-size:.88rem;margin-bottom:12px}
-.service-foot{display:flex;align-items:center;justify-content:space-between}
-.service-foot b{color:var(--primary-dark);font-size:1.1rem}
-.service-btn{padding:9px 18px;border:none;border-radius:999px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-weight:800;font-size:.88rem;transition:box-shadow .25s}
-.service-btn:hover{box-shadow:0 6px 16px rgba(37,99,235,.4)}
-
-@media(max-width:680px){
-  .services-grid{grid-template-columns:1fr;gap:14px}
-  .service-img{height:150px}
-}
-/* ═══ روابط التواصل في الفوتر ═══ */
-.footer-social{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
-.social-link{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;
-  border-radius:999px;font-size:.85rem;font-weight:700;text-decoration:none;
-  border:1px solid var(--line);background:#fff;color:var(--text);
-  transition:transform .2s,box-shadow .2s}
-.social-link svg{width:16px;height:16px}
-.social-link:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(15,23,42,.12)}
-.social-link.fb{color:#1877F2}
-.social-link.fb:hover{border-color:#1877F2}
-.social-link.msgr{color:#A334FA}
-.social-link.msgr:hover{border-color:#A334FA}
-.social-link.wapp{color:#25D366}
-.social-link.wapp:hover{border-color:#25D366}
-.msgr-big{display:flex;align-items:center;justify-content:center;gap:10px;
-  width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#A334FA,#7A0BC0);
-  color:#fff;font-weight:800;font-size:1rem;border:none;cursor:pointer;font-family:inherit;
-  box-shadow:0 6px 18px rgba(163,52,250,.3);transition:transform .2s,box-shadow .2s}
-.msgr-big:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(163,52,250,.4)}
-.msgr-big svg{width:22px;height:22px;fill:#fff;flex-shrink:0}
-/* ═══ نافذة الخدمات ═══ */
-.modal.single{grid-template-columns:1fr}
-.svc-options{display:flex;flex-direction:column;gap:10px;margin-top:16px}
-.svc-option{display:flex;align-items:center;gap:12px;padding:14px 16px;
-  border:2px solid var(--line);border-radius:14px;background:#fff;cursor:pointer;
-  transition:border-color .2s,transform .2s;text-align:start;font-family:inherit;width:100%}
-.svc-option:hover{border-color:var(--primary);transform:translateY(-2px)}
-.svc-ic{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#E8F0FE,#DBEAFE);
-  display:grid;place-items:center;flex-shrink:0}
-.svc-ic svg{width:24px;height:24px;color:var(--primary-dark)}
-.svc-txt{flex:1}
-.svc-txt b{display:block;color:var(--dark)}
-.svc-txt small{color:var(--muted);font-size:.82rem}
-.svc-arrow{color:var(--primary);font-weight:800}
-/* ═══════════ نافذة الخدمات الحديثة ═══════════ */
-.modal.single{grid-template-columns:1fr}
-
-/* خيار خدمة — بطاقة سطرية أنيقة */
-.svc-row{display:flex;align-items:center;gap:14px;width:100%;
-  padding:14px;border:2px solid var(--line);border-radius:16px;
-  background:#fff;cursor:pointer;text-align:start;font-family:inherit;
-  transition:border-color .2s,transform .2s,box-shadow .2s}
-.svc-row:hover{border-color:var(--primary);transform:translateY(-2px);
-  box-shadow:0 6px 16px rgba(37,99,235,.12)}
-.svc-ic{width:52px;height:52px;border-radius:14px;flex-shrink:0;
-  background:linear-gradient(135deg,#E8F0FE,#DBEAFE);display:grid;place-items:center}
-.svc-ic svg{width:26px;height:26px;color:var(--primary-dark)}
-.svc-body{flex:1;min-width:0}
-.svc-body b{display:block;color:var(--dark);font-size:1rem}
-.svc-body small{display:block;color:var(--muted);font-size:.8rem;margin-top:2px}
-.svc-go{width:34px;height:34px;border-radius:50%;flex-shrink:0;
-  background:#EFF6FF;display:grid;place-items:center;
-  color:var(--primary);font-weight:800;font-size:1rem;transition:.2s}
-.svc-row:hover .svc-go{background:var(--primary);color:#fff}
-
-/* عنوان فرعي داخل النافذة */
-.svc-sec-title{display:flex;align-items:center;gap:8px;
-  font-weight:800;color:var(--dark);font-size:.92rem;
-  margin:18px 0 10px}
-.svc-sec-title::after{content:'';flex:1;height:1px;background:var(--line)}
-
-/* chips السعة — أكبر وأوضح من عادي */
-.size-chip{border:2px solid var(--line);background:#fff;border-radius:14px;
-  padding:12px 22px;font-weight:800;font-size:.95rem;color:var(--text);
-  cursor:pointer;font-family:inherit;transition:.2s}
-.size-chip:hover{border-color:var(--primary)}
-.size-chip.active{border-color:var(--primary);background:var(--primary);color:#fff;
-  box-shadow:0 4px 12px rgba(37,99,235,.3)}
-/* ═══ نافذة الخدمات — تصميم عصري ═══ */
-.modal.single{grid-template-columns:1fr}
-.svc-row{display:flex;align-items:center;gap:14px;width:100%;
-  padding:14px;border:2px solid var(--line);border-radius:16px;
-  background:#fff;cursor:pointer;text-align:start;font-family:inherit;
-  transition:border-color .2s,transform .2s,box-shadow .2s}
-.svc-row:hover{border-color:var(--primary);transform:translateY(-2px);
-  box-shadow:0 6px 16px rgba(37,99,235,.12)}
-.svc-ic{width:52px;height:52px;border-radius:14px;flex-shrink:0;
-  background:linear-gradient(135deg,#E8F0FE,#DBEAFE);display:grid;place-items:center}
-.svc-ic svg{width:26px;height:26px;color:var(--primary-dark)}
-.svc-body{flex:1;min-width:0}
-.svc-body b{display:block;color:var(--dark);font-size:1rem}
-.svc-body small{display:block;color:var(--muted);font-size:.8rem;margin-top:2px}
-.svc-go{width:34px;height:34px;border-radius:50%;flex-shrink:0;
-  background:#EFF6FF;display:grid;place-items:center;
-  color:var(--primary);font-weight:800;font-size:1rem;transition:.2s}
-.svc-row:hover .svc-go{background:var(--primary);color:#fff}
-
-.svc-sec-title{display:flex;align-items:center;gap:8px;
-  font-weight:800;color:var(--dark);font-size:.92rem;margin:18px 0 10px}
-.svc-sec-title::after{content:'';flex:1;height:1px;background:var(--line)}
-
-.size-chip{border:2px solid var(--line);background:#fff;border-radius:14px;
-  padding:12px 22px;font-weight:800;font-size:.95rem;color:var(--text);
-  cursor:pointer;font-family:inherit;transition:.2s}
-.size-chip:hover{border-color:var(--primary)}
-.size-chip.active{border-color:var(--primary);background:var(--primary);color:#fff;
-  box-shadow:0 4px 12px rgba(37,99,235,.3)}
-
-.svc-form{margin-top:4px}
-.svc-form input{width:100%;padding:12px 14px;border:2px solid var(--line);
-  border-radius:12px;font-family:inherit;font-size:16px;margin-bottom:10px;
-  background:#F8FAFC;transition:border-color .2s}
-.svc-form input:focus{outline:none;border-color:var(--primary);
-  box-shadow:0 0 0 3px rgba(37,99,235,.15)}
-.svc-send{width:100%;padding:14px;border:none;border-radius:14px;
-  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-  color:#fff;font-size:1rem;font-weight:800;cursor:pointer;font-family:inherit;
-  box-shadow:0 6px 18px rgba(37,99,235,.35);transition:transform .2s,box-shadow .2s}
-.svc-send:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(37,99,235,.45)}
-.svc-send:disabled{opacity:.6;transform:none}
-
-@media(max-width:680px){
-  .svc-ic{width:44px;height:44px}
-  .svc-ic svg{width:22px;height:22px}
-}
-/* ═══ بانر اللوجو الفاخر ═══ */
-/* ═══ بانر اللوجو الفاخر — حجم معتدل ═══ */
-.hero{padding-top:24px}
-.hero-banner{max-width:320px;margin:0 auto 12px;padding:0 12px}
-.hero-banner img{width:100%;height:220px;object-fit:cover;object-position:center;
-  display:block;border-radius:18px;
-  border:2px solid rgba(212,175,55,.55);
-  box-shadow:0 10px 30px rgba(0,0,0,.35)}
-@media(max-width:680px){
-  .hero-banner{padding:0 14px}
-  .hero-banner img{height:150px;border-radius:14px}
-}
-/* ═══ البانر المزدوج: لوجو جانب النص ═══ */
-/* ═══ البانر المزدوج: لوجو جانب النص ═══ */
-.hero-split{max-width:1400px;margin:auto;display:grid;
-  grid-template-columns:1fr 1fr;gap:40px;align-items:center;
-  padding:36px 20px 26px}
-.hero-media img{width:100%;max-width:540px;aspect-ratio:1/0.75;
-  object-fit:cover;object-position:center 30%;   /* ★ يقص الأسود الفارغ أسفل اللوجو */
-  border-radius:20px;
-  border:2px solid rgba(212,175,55,.55);
-  box-shadow:0 12px 36px rgba(0,0,0,.4);display:block;
-  margin:auto}                                    /* توسيط اللوجو في عموده */
-.hero-text{text-align:center}                     /* ★ توسيط النص — توازن مع اللوجو */
-
-@media(max-width:680px){
-  .hero-split{grid-template-columns:1fr;gap:22px;padding:22px 16px}
-  .hero-media img{max-width:260px}
 }
