@@ -178,7 +178,7 @@ const VARIANT_COLOR_IMAGES = {
   },
   'سماعة خيط': {
     'Hoco':    '/images/earphone-wired-hoco.webp',
-    'Samsung': '/images/earphone-wired-samsung.webp'
+    'Sumsung': '/images/earphone-wired-sm.webp'
   },
   'كابل شحن': {
     'Type-C':    '/images/cable-typec.jpg',
@@ -188,6 +188,13 @@ const VARIANT_COLOR_IMAGES = {
   'شاحن هاتف': {
     'عادي': '/images/charger-phone.webp',
     'سريع': '/images/charger-fast.webp'
+  },
+  'نظارة رجالية': {
+    'تصميم 1': '/images/glass1.jpg',
+    'تصميم 2': '/images/glass2.jpg',
+    'تصميم 3': '/images/glass3.jpg',
+    'تصميم 4': '/images/glass4.jpg',
+    'تصميم 5': '/images/glass5.jpg'
   }
 };
 
@@ -533,7 +540,13 @@ function showToast(msg, type=''){
   const tt = $('#toast'); tt.textContent = msg; tt.className = 'toast show ' + type;
   clearTimeout(toastT); toastT = setTimeout(()=>tt.classList.remove('show'), 2500);
 }
-
+/* ═══ Esc يغلق النوافذ والسلة ═══ */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeModal();          // نافذة المنتج/الخدمات (آمنة إن كانت مغلقة)
+    toggleCart(false);     // السلة (آمنة كذلك)
+  }
+});
 /* ═══ التشغيل + البث الحيّ ═══ */
 applyLang();
 loadAll();

@@ -130,8 +130,8 @@ main{max-width:1400px;margin:auto;padding:0 20px 60px}
 .modal.single{grid-template-columns:1fr}
 .m-close{position:absolute;top:14px;inset-inline-end:14px;width:36px;height:36px;border-radius:50%;border:none;background:#E2E8F0;font-size:1rem;z-index:3;transition:background .2s}
 .m-close:hover{background:var(--danger);color:#fff}
-.m-img{min-height:320px;position:relative}
-.m-img img{width:100%;height:100%;object-fit:cover}
+.m-img{height:320px;position:relative}
+.m-img img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
 .m-img .ph{font-size:5rem}
 .m-info{padding:28px 24px}
 .m-info h2{color:var(--dark);margin:6px 0 10px;font-size:1.4rem}
@@ -228,30 +228,55 @@ footer{text-align:center;padding:26px;color:var(--muted);font-size:.85rem;border
 .sq svg{width:42px;height:42px;color:var(--primary-dark)}
 .crumb .cur .cat-ic{color:var(--primary-dark)}
 
-/* ═══ الخدمات ═══ */
-.service-btn{padding:9px 18px;border:none;border-radius:999px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-weight:800;font-size:.88rem;transition:box-shadow .25s}
-.service-btn:hover{box-shadow:0 6px 16px rgba(37,99,235,.4)}
-
-/* ═══ روابط التواصل في الفوتر ═══ */
-.footer-social{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
-.social-link{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;
-  border-radius:999px;font-size:.85rem;font-weight:700;text-decoration:none;
-  border:1px solid var(--line);background:#fff;color:var(--text);
-  transition:transform .2s,box-shadow .2s}
-.social-link svg{width:16px;height:16px}
-.social-link:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(15,23,42,.12)}
-.social-link.fb{color:#1877F2}
-.social-link.fb:hover{border-color:#1877F2}
-.social-link.msgr{color:#A334FA}
-.social-link.msgr:hover{border-color:#A334FA}
-.social-link.wapp{color:#25D366}
-.social-link.wapp:hover{border-color:#25D366}
+/* ═══ زر Messenger الكبير ═══ */
 .msgr-big{display:flex;align-items:center;justify-content:center;gap:10px;
   width:100%;padding:14px;border-radius:14px;background:linear-gradient(135deg,#A334FA,#7A0BC0);
   color:#fff;font-weight:800;font-size:1rem;border:none;cursor:pointer;font-family:inherit;
   box-shadow:0 6px 18px rgba(163,52,250,.3);transition:transform .2s,box-shadow .2s}
 .msgr-big:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(163,52,250,.4)}
 .msgr-big svg{width:22px;height:22px;fill:#fff;flex-shrink:0}
+
+/* ═══ نافذة الخدمات (إن بقيت الدوال في script.js) ═══ */
+.svc-row{display:flex;align-items:center;gap:14px;width:100%;
+  padding:14px;border:2px solid var(--line);border-radius:16px;
+  background:#fff;cursor:pointer;text-align:start;font-family:inherit;
+  transition:border-color .2s,transform .2s,box-shadow .2s}
+.svc-row:hover{border-color:var(--primary);transform:translateY(-2px);
+  box-shadow:0 6px 16px rgba(37,99,235,.12)}
+.svc-ic{width:52px;height:52px;border-radius:14px;flex-shrink:0;
+  background:linear-gradient(135deg,#E8F0FE,#DBEAFE);display:grid;place-items:center}
+.svc-ic svg{width:26px;height:26px;color:var(--primary-dark)}
+.svc-body{flex:1;min-width:0}
+.svc-body b{display:block;color:var(--dark);font-size:1rem}
+.svc-body small{display:block;color:var(--muted);font-size:.8rem;margin-top:2px}
+.svc-go{width:34px;height:34px;border-radius:50%;flex-shrink:0;
+  background:#EFF6FF;display:grid;place-items:center;
+  color:var(--primary);font-weight:800;font-size:1rem;transition:.2s}
+.svc-row:hover .svc-go{background:var(--primary);color:#fff}
+
+.svc-sec-title{display:flex;align-items:center;gap:8px;
+  font-weight:800;color:var(--dark);font-size:.92rem;margin:18px 0 10px}
+.svc-sec-title::after{content:'';flex:1;height:1px;background:var(--line)}
+
+.size-chip{border:2px solid var(--line);background:#fff;border-radius:14px;
+  padding:12px 22px;font-weight:800;font-size:.95rem;color:var(--text);
+  cursor:pointer;font-family:inherit;transition:.2s}
+.size-chip:hover{border-color:var(--primary)}
+.size-chip.active{border-color:var(--primary);background:var(--primary);color:#fff;
+  box-shadow:0 4px 12px rgba(37,99,235,.3)}
+
+.svc-form{margin-top:4px}
+.svc-form input{width:100%;padding:12px 14px;border:2px solid var(--line);
+  border-radius:12px;font-family:inherit;font-size:16px;margin-bottom:10px;
+  background:#F8FAFC;transition:border-color .2s}
+.svc-form input:focus{outline:none;border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+.svc-send{width:100%;padding:14px;border:none;border-radius:14px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff;font-size:1rem;font-weight:800;cursor:pointer;font-family:inherit;
+  box-shadow:0 6px 18px rgba(37,99,235,.35);transition:transform .2s,box-shadow .2s}
+.svc-send:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(37,99,235,.45)}
+.svc-send:disabled{opacity:.6;transform:none}
 
 /* ═══ الموبايل — كتلة واحدة ═══ */
 @media(max-width:680px){
@@ -283,7 +308,7 @@ footer{text-align:center;padding:26px;color:var(--muted);font-size:.85rem;border
   .badge{font-size:.68rem;padding:3px 10px}
 
   .modal{grid-template-columns:1fr;max-height:92vh;border-radius:20px}
-  .m-img{min-height:200px;max-height:250px}
+  .m-img{height:200px}
   .m-info{padding:20px 16px}
   .m-info h2{font-size:1.15rem}
   .m-desc{font-size:.88rem}
@@ -294,6 +319,9 @@ footer{text-align:center;padding:26px;color:var(--muted);font-size:.85rem;border
 
   .ph svg{width:44px;height:44px}
   .sq svg{width:34px;height:34px}
+
+  .svc-ic{width:44px;height:44px}
+  .svc-ic svg{width:22px;height:22px}
 }
 
 /* ═══ الهاتف اللمسي: الناقل سحب يدوي ═══ */
