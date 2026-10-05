@@ -336,3 +336,17 @@ footer{text-align:center;padding:26px;color:var(--muted);font-size:.85rem;border
   .cat-track{animation:none !important}
   .cat-card{scroll-snap-align:center}
 }
+/* ═══════════ روابط التواصل في الفوتر — الاستعادة ═══════════ */
+.footer-social{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.social-link{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;
+  border-radius:999px;font-size:.85rem;font-weight:700;text-decoration:none;
+  border:1px solid var(--line);background:#fff;color:var(--text);
+  transition:transform .2s,box-shadow .2s}
+.social-link svg{width:16px;height:16px}
+.social-link:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(15,23,42,.12)}
+.social-link.fb{color:#1877F2}
+.social-link.fb:hover{border-color:#1877F2}
+.social-link.msgr{color:#A334FA}
+.social-link.msgr:hover{border-color:#A334FA}
+.social-link.wapp{color:#25D366}
+.social-link.wapp:hover{border-color:#25D366}
