@@ -182,6 +182,7 @@ const VARIANT_COLOR_IMAGES = {
   }
 };
 
+
 const imgURL = u => (u || '').replace(/^\/+/, '');
 const catById = id => cats.find(c => c.id === id);
 const mainCats = () => cats.filter(c => !c.parent_id).sort((a,b)=>a.sort_order-b.sort_order);
