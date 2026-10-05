@@ -177,8 +177,17 @@ const VARIANT_COLOR_IMAGES = {
     'أسود':       '/images/case4.jpg'
   },
   'سماعة خيط': {
-    'Hoco': '/images/earphone-wired-hoco.webp',
-    'Sumsung':   '/images/earphone-wired-sm.webp'
+    'Hoco':    '/images/earphone-wired-hoco.webp',
+    'Samsung': '/images/earphone-wired-samsung.webp'
+  },
+  'كابل شحن': {
+    'Type-C':    '/images/cable-typec.jpg',
+    'Micro USB': '/images/cable-micro.webp',
+    'iPhone':    '/images/cable-iphone.webp'
+  },
+  'شاحن هاتف': {
+    'عادي': '/images/charger-phone.webp',
+    'سريع': '/images/charger-fast.webp'
   }
 };
 
