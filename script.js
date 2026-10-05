@@ -158,9 +158,8 @@ let current = null, selVariant = 0, qty = 1;
 let cart = JSON.parse(localStorage.getItem('dz_cart') || '[]');
 
 /* ═══════════════════════════════════════════
-   ★ خريطة ربط ألوان الخيارات بالصور
-   القبعات (6 ألوان) + الحقيبة (4 ألوان)
-   أي منتج قادم بألوان يُضاف هنا بنفس النمط
+   ★ خريطة ربط ألوان/أنواع الخيارات بالصور
+   القبعات (6) + الحقيبة (4) + السماعة الخيطية (2)
 ═══════════════════════════════════════════ */
 const VARIANT_COLOR_IMAGES = {
   'قبعة رجالية': {
@@ -176,6 +175,10 @@ const VARIANT_COLOR_IMAGES = {
     'رمادي':      '/images/case2.jpg',
     'أخضر داكن':  '/images/case3.jpg',
     'أسود':       '/images/case4.jpg'
+  },
+  'سماعة خيط': {
+    'Hoco': '/images/earphone-wired-hoco.webp',
+    'Sumsung':   '/images/earphone-wired-sm.webp'
   }
 };
 
@@ -324,7 +327,7 @@ function renderModal() {
   const p = current, vs = p.product_variants || [], v = vs[selVariant];
   let img = p.images?.[0], out = soldOut(p);
 
-  /* ★ لو الخيار المختار (لون) له صورة خاصة — استخدمها بدل الرئيسية */
+  /* ★ لو الخيار المختار (لون/نوع) له صورة خاصة — استخدمها بدل الرئيسية */
   const colorMap = VARIANT_COLOR_IMAGES[p.name];
   if (colorMap && v && colorMap[v.label]) {
     img = colorMap[v.label];
