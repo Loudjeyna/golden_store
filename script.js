@@ -177,7 +177,7 @@ const VARIANT_COLOR_IMAGES = {
   },
   'سماعة خيط': {
     'Hoco':    '/images/earphone-wired-hoco.webp',
-    'Samsung': '/images/earphone-wired-sm.webp'
+    'Sumsung': '/images/earphone-wired-sm.webp'
   },
   'كابل شحن': {
     'Type-C':    '/images/cable-typec.jpg',
@@ -194,6 +194,13 @@ const VARIANT_COLOR_IMAGES = {
     'تصميم 3': '/images/glass3.jpg',
     'تصميم 4': '/images/glass4.jpg',
     'تصميم 5': '/images/glass5.jpg'
+  },
+    'بالونات زينة': {
+    'شكل 1': '/images/ballon1.png',
+    'شكل 2': '/images/ballon2.png',
+    'شكل 3': '/images/ballon3.png',
+    'شكل 4': '/images/ballon4.png',
+    'شكل 5': '/images/ballon5.png'
   }
 };
 
