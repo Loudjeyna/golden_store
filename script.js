@@ -348,10 +348,9 @@ function renderModal() {
     img = colorMap[v.label];
   }
 
-<<<<<<< HEAD
-=======
+
   /* ★ نظام الذوبان: نسخة مموهة من نفس الصورة كخلفية + الصورة حادة فوقها */
->>>>>>> cd1092375e152d29d31d987dae81f11a431efef2
+
   const imgBlock = img
     ? `<div class="backdrop" style="background-image:url('${imgURL(img)}')"></div>
        <img class="front" src="${imgURL(img)}" alt="${p.name}" onerror="this.style.display='none'">`
