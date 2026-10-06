@@ -159,7 +159,6 @@ let cart = JSON.parse(localStorage.getItem('dz_cart') || '[]');
 
 /* ═══════════════════════════════════════════
    ★ خريطة ربط ألوان/أنواع الخيارات بالصور
-   القبعات (6) + الحقيبة (4) + السماعة الخيطية (2)
 ═══════════════════════════════════════════ */
 const VARIANT_COLOR_IMAGES = {
   'قبعة رجالية': {
@@ -178,7 +177,7 @@ const VARIANT_COLOR_IMAGES = {
   },
   'سماعة خيط': {
     'Hoco':    '/images/earphone-wired-hoco.webp',
-    'Sumsung': '/images/earphone-wired-sm.webp'
+    'Samsung': '/images/earphone-wired-sm.webp'
   },
   'كابل شحن': {
     'Type-C':    '/images/cable-typec.jpg',
@@ -197,7 +196,6 @@ const VARIANT_COLOR_IMAGES = {
     'تصميم 5': '/images/glass5.jpg'
   }
 };
-
 
 const imgURL = u => (u || '').replace(/^\/+/, '');
 const catById = id => cats.find(c => c.id === id);
@@ -344,19 +342,21 @@ function renderModal() {
   const p = current, vs = p.product_variants || [], v = vs[selVariant];
   let img = p.images?.[0], out = soldOut(p);
 
-  /* ★ لو الخيار المختار (لون/نوع) له صورة خاصة — استخدمها بدل الرئيسية */
+  /* ★ لو الخيار المختار (لون/نوع) له صورة خاصة — استخدمها */
   const colorMap = VARIANT_COLOR_IMAGES[p.name];
   if (colorMap && v && colorMap[v.label]) {
     img = colorMap[v.label];
   }
 
+  const imgBlock = img
+    ? `<div class="backdrop" style="background-image:url('${imgURL(img)}')"></div>
+       <img class="front" src="${imgURL(img)}" alt="${p.name}" onerror="this.style.display='none'">`
+    : `<div class="ph">${icon('default')}</div>`;
+
   $('#modal-body').innerHTML = `
     <button class="m-close" onclick="closeModal()">✕</button>
     <div class="m-img">
-      ${img
-        ? `<img src="${imgURL(img)}" alt="${p.name}" onerror="this.nextElementSibling.style.display='grid';this.remove()">
-           <div class="ph" style="display:none">${icon('default')}</div>`
-        : `<div class="ph">${icon('default')}</div>`}
+      ${imgBlock}
     </div>
     <div class="m-info">
       <span class="card-cat">${catLabel(p)}</span>
@@ -534,19 +534,21 @@ function closeOrderDone(){
   renderCart();
 }
 
+/* ═══ Esc يغلق النوافذ والسلة ═══ */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closeModal();
+    toggleCart(false);
+  }
+});
+
 /* ═══ إشعارات ═══ */
 let toastT;
 function showToast(msg, type=''){
   const tt = $('#toast'); tt.textContent = msg; tt.className = 'toast show ' + type;
   clearTimeout(toastT); toastT = setTimeout(()=>tt.classList.remove('show'), 2500);
 }
-/* ═══ Esc يغلق النوافذ والسلة ═══ */
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    closeModal();          // نافذة المنتج/الخدمات (آمنة إن كانت مغلقة)
-    toggleCart(false);     // السلة (آمنة كذلك)
-  }
-});
+
 /* ═══ التشغيل + البث الحيّ ═══ */
 applyLang();
 loadAll();
