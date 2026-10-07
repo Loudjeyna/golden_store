@@ -319,15 +319,15 @@ footer .footer-social{display:flex !important;gap:10px;justify-content:center;fl
 .social-link.msgr:hover{border-color:#A334FA}
 .social-link.wapp{color:#25D366}
 .social-link.wapp:hover{border-color:#25D366}
+/* صندوق الصورة: الخلفية المموهة تملأ دائماً + الصورة أمامها بعرض كامل */
 .m-img{position:relative;height:320px;overflow:hidden;background:#F1F5F9}
 .m-img .backdrop{position:absolute;inset:-30px;
   background-size:cover;background-position:center;
   filter:blur(28px) saturate(1.25);transform:scale(1.12);opacity:.85}
-.m-img img{position:relative;z-index:1;width:100%;height:100%;
-  object-fit:contain;object-position:center;display:block;padding:14px}
-.m-img .ph{position:absolute;inset:0;z-index:1;display:grid;place-items:center;font-size:5rem;background:linear-gradient(135deg,#E8F0FE,#DBEAFE)}
+.m-img img{position:absolute;inset:0;z-index:1;width:100%;height:100%;
+  object-fit:cover;object-position:center;display:block}
 
-/* الموبايل داخل @media: */
+@media(max-width:680px){
   .m-img{height:220px}
   .m-img .backdrop{inset:-20px;filter:blur(18px) saturate(1.25)}
-
+}
