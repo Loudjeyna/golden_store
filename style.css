@@ -51,7 +51,9 @@ header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop
   border-bottom:1px solid var(--line)}
 .hero h1{font-size:2.1rem;color:var(--dark)}
 .hero p{color:var(--muted);margin-top:6px}
-.hero .go{padding:12px 34px;border:none;border-radius:999px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-weight:800;font-size:1rem;box-shadow:0 8px 22px rgba(37,99,235,.4);transition:box-shadow .25s}
+.hero .go{padding:12px 34px;border:none;border-radius:999px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-weight:800;font-size:1rem;
+  box-shadow:0 8px 22px rgba(37,99,235,.4);transition:box-shadow .25s}
 .hero .go:hover{box-shadow:0 14px 30px rgba(37,99,235,.5)}
 .hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px}
 .go.ghost{background:rgba(255,255,255,.85);color:var(--primary-dark);border:2px solid var(--primary);
@@ -123,26 +125,30 @@ main{max-width:1400px;margin:auto;padding:0 20px 60px}
 .card-price del{color:var(--muted);font-size:.9rem}
 .empty{grid-column:1/-1;text-align:center;padding:70px 0;color:var(--muted)}
 
-/* ═══ نافذة المنتج — الصورة تذوب في خلفيتها ═══ */
+/* ═══ نافذة المنتج — صورة عريضة أعلى والمحتوى تحتها ═══ */
 .overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);backdrop-filter:blur(5px);z-index:100;display:none;place-items:center;padding:16px}
 .overlay.open{display:grid;animation:fade .25s}
-.modal{background:#fff;border-radius:24px;max-width:780px;width:100%;max-height:90vh;overflow-y:auto;display:grid;grid-template-columns:1fr 1.1fr;position:relative;animation:up .3s}
-.modal.single{grid-template-columns:1fr}
+.modal{background:#fff;border-radius:24px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto;position:relative;animation:up .3s}
+.modal.single{max-width:560px}
 .m-close{position:absolute;top:14px;inset-inline-end:14px;width:36px;height:36px;border-radius:50%;border:none;background:rgba(255,255,255,.85);font-size:1rem;z-index:3;transition:background .2s;box-shadow:0 2px 8px rgba(15,23,42,.15)}
 .m-close:hover{background:var(--danger);color:#fff}
 
-/* ★ صندوق الصورة: نسخة مموهة من الصورة نفسها خلفية + الصورة حادة فوقها */
-.m-img{position:relative;height:320px;overflow:hidden;background:#F1F5F9}
+/* ★ صندوق الصورة: عريض أعلى — خلفية مموهة من الصورة نفسها + الصورة cover تملأ */
+.m-img{position:relative;height:auto;
+  max-height:750px;overflow:hidden;
+  background:#F1F5F9;
+  display:grid;place-items:center}
 .m-img .backdrop{position:absolute;inset:-30px;
   background-size:cover;background-position:center;
   filter:blur(28px) saturate(1.25);transform:scale(1.12);opacity:.85}
 .m-img img{position:relative;z-index:1;width:100%;height:100%;
-  object-fit:contain;object-position:center;display:block;padding:14px}
+  object-fit:cover;object-position:center;display:block}
 .m-img .ph{position:absolute;inset:0;z-index:1;display:grid;place-items:center;font-size:5rem;background:linear-gradient(135deg,#E8F0FE,#DBEAFE)}
 
-.m-info{padding:28px 24px}
-.m-info h2{color:var(--dark);margin:6px 0 10px;font-size:1.4rem}
-.m-desc{color:var(--muted);font-size:.93rem;margin-bottom:16px}
+/* ★ المحتوى كله تحت الصورة */
+.m-info{padding:22px 22px 26px}
+.m-info h2{color:var(--dark);margin:0 0 8px;font-size:1.3rem}
+.m-desc{color:var(--muted);font-size:.93rem;margin-bottom:14px}
 .m-label{font-weight:800;font-size:.9rem;margin-bottom:8px;color:var(--dark)}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
 .chip{border:2px solid var(--line);background:#fff;border-radius:12px;padding:9px 14px;font-weight:700;font-size:.88rem;transition:border-color .2s}
@@ -152,7 +158,7 @@ main{max-width:1400px;margin:auto;padding:0 20px 60px}
 .low{color:#B7791F;background:#FDF3DC;display:inline-block;padding:4px 12px;border-radius:999px;font-size:.82rem;font-weight:700;margin-bottom:12px}
 .qty-row{display:flex;align-items:center;gap:14px;margin-bottom:16px}
 .stepper{display:flex;align-items:center;gap:14px;border:2px solid var(--line);border-radius:12px;padding:5px 10px}
-.stepper button{width:30px;height:30px;border:none;border-radius:9px;background:#E8F0FE;font-size:1.1rem;font-weight:800;color:var(--primary-dark);transition:background .2s}
+.stepper button{width:32px;height:32px;border:none;border-radius:9px;background:#E8F0FE;font-size:1.1rem;font-weight:800;color:var(--primary-dark);transition:background .2s}
 .stepper button:hover{background:var(--primary);color:#fff}
 .cta{width:100%;padding:14px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;font-size:1.02rem;font-weight:800;transition:box-shadow .25s;box-shadow:0 6px 18px rgba(37,99,235,.35)}
 .cta:hover:not(:disabled){box-shadow:0 10px 26px rgba(37,99,235,.45)}
@@ -243,6 +249,48 @@ footer{text-align:center;padding:26px;color:var(--muted);font-size:.85rem;border
 .msgr-big:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(163,52,250,.4)}
 .msgr-big svg{width:22px;height:22px;fill:#fff;flex-shrink:0}
 
+/* ═══ نافذة الخدمات (إن بقيت الدوال) ═══ */
+.svc-row{display:flex;align-items:center;gap:14px;width:100%;
+  padding:14px;border:2px solid var(--line);border-radius:16px;
+  background:#fff;cursor:pointer;text-align:start;font-family:inherit;
+  transition:border-color .2s,transform .2s,box-shadow .2s}
+.svc-row:hover{border-color:var(--primary);transform:translateY(-2px);
+  box-shadow:0 6px 16px rgba(37,99,235,.12)}
+.svc-ic{width:52px;height:52px;border-radius:14px;flex-shrink:0;
+  background:linear-gradient(135deg,#E8F0FE,#DBEAFE);display:grid;place-items:center}
+.svc-ic svg{width:26px;height:26px;color:var(--primary-dark)}
+.svc-body{flex:1;min-width:0}
+.svc-body b{display:block;color:var(--dark);font-size:1rem}
+.svc-body small{display:block;color:var(--muted);font-size:.8rem;margin-top:2px}
+.svc-go{width:34px;height:34px;border-radius:50%;flex-shrink:0;
+  background:#EFF6FF;display:grid;place-items:center;
+  color:var(--primary);font-weight:800;font-size:1rem;transition:.2s}
+.svc-row:hover .svc-go{background:var(--primary);color:#fff}
+
+.svc-sec-title{display:flex;align-items:center;gap:8px;
+  font-weight:800;color:var(--dark);font-size:.92rem;margin:18px 0 10px}
+.svc-sec-title::after{content:'';flex:1;height:1px;background:var(--line)}
+
+.size-chip{border:2px solid var(--line);background:#fff;border-radius:14px;
+  padding:12px 22px;font-weight:800;font-size:.95rem;color:var(--text);
+  cursor:pointer;font-family:inherit;transition:.2s}
+.size-chip:hover{border-color:var(--primary)}
+.size-chip.active{border-color:var(--primary);background:var(--primary);color:#fff;
+  box-shadow:0 4px 12px rgba(37,99,235,.3)}
+
+.svc-form{margin-top:4px}
+.svc-form input{width:100%;padding:12px 14px;border:2px solid var(--line);
+  border-radius:12px;font-family:inherit;font-size:16px;margin-bottom:10px;
+  background:#F8FAFC;transition:border-color .2s}
+.svc-form input:focus{outline:none;border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+.svc-send{width:100%;padding:14px;border:none;border-radius:14px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
+  color:#fff;font-size:1rem;font-weight:800;cursor:pointer;font-family:inherit;
+  box-shadow:0 6px 18px rgba(37,99,235,.35);transition:transform .2s,box-shadow .2s}
+.svc-send:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(37,99,235,.45)}
+.svc-send:disabled{opacity:.6;transform:none}
+
 /* ═══ الموبايل — كتلة واحدة ═══ */
 @media(max-width:680px){
   .header-in{padding:8px 14px}
@@ -272,7 +320,7 @@ footer{text-align:center;padding:26px;color:var(--muted);font-size:.85rem;border
   .card-price b{font-size:1rem}
   .badge{font-size:.68rem;padding:3px 10px}
 
-  .modal{grid-template-columns:1fr;max-height:92vh;border-radius:20px}
+  .modal{max-height:92vh;border-radius:20px}
   .m-img{height:220px}
   .m-img .backdrop{inset:-20px;filter:blur(18px) saturate(1.25)}
   .m-info{padding:20px 16px}
@@ -285,6 +333,9 @@ footer{text-align:center;padding:26px;color:var(--muted);font-size:.85rem;border
 
   .ph svg{width:44px;height:44px}
   .sq svg{width:34px;height:34px}
+
+  .svc-ic{width:44px;height:44px}
+  .svc-ic svg{width:22px;height:22px}
 }
 
 /* ═══ الهاتف اللمسي: الناقل سحب يدوي ═══ */
@@ -298,36 +349,4 @@ footer{text-align:center;padding:26px;color:var(--muted);font-size:.85rem;border
   .cat-strip::-webkit-scrollbar{display:none}
   .cat-track{animation:none !important}
   .cat-card{scroll-snap-align:center}
-}
-
-/* ═══ حماية نهائية لروابط الفوتر الاجتماعية ═══ */
-footer .social-link svg{width:16px !important;height:16px !important;flex-shrink:0}
-footer .social-link{padding:8px 16px !important;font-size:.85rem !important}
-footer .footer-social{display:flex !important;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
-
-/* ═══════════ روابط التواصل في الفوتر — الاستعادة ═══════════ */
-.footer-social{display:flex;gap:10px;justify-content:center;margin-top:14px;flex-wrap:wrap}
-.social-link{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;
-  border-radius:999px;font-size:.85rem;font-weight:700;text-decoration:none;
-  border:1px solid var(--line);background:#fff;color:var(--text);
-  transition:transform .2s,box-shadow .2s}
-.social-link svg{width:16px;height:16px}
-.social-link:hover{transform:translateY(-3px);box-shadow:0 6px 16px rgba(15,23,42,.12)}
-.social-link.fb{color:#1877F2}
-.social-link.fb:hover{border-color:#1877F2}
-.social-link.msgr{color:#A334FA}
-.social-link.msgr:hover{border-color:#A334FA}
-.social-link.wapp{color:#25D366}
-.social-link.wapp:hover{border-color:#25D366}
-/* صندوق الصورة: الخلفية المموهة تملأ دائماً + الصورة أمامها بعرض كامل */
-.m-img{position:relative;height:320px;overflow:hidden;background:#F1F5F9}
-.m-img .backdrop{position:absolute;inset:-30px;
-  background-size:cover;background-position:center;
-  filter:blur(28px) saturate(1.25);transform:scale(1.12);opacity:.85}
-.m-img img{position:absolute;inset:0;z-index:1;width:100%;height:100%;
-  object-fit:cover;object-position:center;display:block}
-
-@media(max-width:680px){
-  .m-img{height:220px}
-  .m-img .backdrop{inset:-20px;filter:blur(18px) saturate(1.25)}
 }
