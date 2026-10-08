@@ -177,7 +177,7 @@ const VARIANT_COLOR_IMAGES = {
   },
   'سماعة خيط': {
     'Hoco':    '/images/earphone-wired-hoco.webp',
-    'Sumsung': '/images/earphone-wired-sm.webp'
+    'Samsung': '/images/earphone-wired-sm.webp'
   },
   'كابل شحن': {
     'Type-C':    '/images/cable-typec.jpg',
@@ -195,7 +195,7 @@ const VARIANT_COLOR_IMAGES = {
     'تصميم 4': '/images/glass4.jpg',
     'تصميم 5': '/images/glass5.jpg'
   },
-    'بالونات زينة': {
+  'بالونات زينة': {
     'شكل 1': '/images/ballon1.png',
     'شكل 2': '/images/ballon2.png',
     'شكل 3': '/images/ballon3.png',
@@ -355,9 +355,7 @@ function renderModal() {
     img = colorMap[v.label];
   }
 
-
   /* ★ نظام الذوبان: نسخة مموهة من نفس الصورة كخلفية + الصورة حادة فوقها */
-
   const imgBlock = img
     ? `<div class="backdrop" style="background-image:url('${imgURL(img)}')"></div>
        <img class="front" src="${imgURL(img)}" alt="${p.name}" onerror="this.style.display='none'">`
@@ -568,3 +566,29 @@ db.channel('store')
   .on('postgres_changes', { event:'*', schema:'public', table:'categories' }, loadAll)
   .subscribe(status => console.log('🔌 حالة البث:', status));
 setInterval(loadAll, 30000);
+
+/* ═══ الوضع الليلي ═══ */
+/* ═══ الوضع الليلي/النهاري ═══ */
+function applyTheme(){
+  const light = localStorage.getItem('store_theme') === 'light';
+  document.body.classList.toggle('light-mode', light);
+  $('#theme-btn').textContent = light ? '🌙' : '☀';
+}
+function toggleTheme(){
+  const light = !document.body.classList.contains('light-mode');
+  localStorage.setItem('store_theme', light ? 'light' : 'dark');
+  applyTheme();
+}
+applyTheme();
+/* ═══ ستارة الدخول — مرة واحدة لكل جلسة ═══ */
+/* ═══ ستارة سينمائية — مرة لكل جلسة ═══ */
+
+
+// إذا كانت الجلسة قد شاهدتها: تُحذف فوراً بلا حركة (لا وميض)
+if (sessionStorage.getItem('intro_done')) {
+  const s = document.getElementById('intro-splash');
+  if (s) s.remove();
+} else {
+  // حماية إضافية: لو حدث خطأ ما — الستارة لا تحبس الزائر أبداً
+  setTimeout(() => skipIntro(), 5000);
+}

@@ -6,56 +6,67 @@ body.svc-page{animation:pageIn .5s ease-out}
 .svc-hero h1{font-size:1.6rem;color:var(--dark)}
 .svc-hero p{color:var(--muted);margin-top:6px;font-size:.95rem}
 
-/* ★ بطاقات الخدمات — صفوف متناوبة */
+/* ═══ بطاقات الخدمات — صفوف متناوبة ═══ */
 .svc-wrap{max-width:900px;margin:auto;padding:10px 20px 40px;display:flex;flex-direction:column;gap:28px}
-.svc-banner{display:grid;grid-template-columns:0.9fr 1.1fr;gap:0;
-  background:#fff;border-radius:20px;overflow:hidden;box-shadow:var(--shadow)}
+
+/* ★ البطاقة: نظام الماء — ألوانه متغيرات، النسائي وردي */
+.svc-banner{position:relative;display:grid;grid-template-columns:0.9fr 1.1fr;gap:0;
+  background:#fff;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);
+  cursor:pointer;
+  --w-top:#BFDBFE; --w-deep:#93C5FD;
+  transition:transform .3s,box-shadow .3s}
+.svc-banner.tint-pink{--w-top:#FBCFE8;--w-deep:#F9A8D4}
+.svc-banner:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(37,99,235,.15)}
 .svc-banner.flip{direction:ltr}
 .svc-banner.flip > *{direction:rtl}
-.svc-banner-img{min-height:180px;background:linear-gradient(135deg,#E8F0FE,#DBEAFE);
+
+.svc-banner-img{position:relative;z-index:2;min-height:180px;
+  background:linear-gradient(135deg,#E8F0FE,#DBEAFE);
   display:grid;place-items:center;overflow:hidden}
 .svc-banner-img img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
 .svc-banner-img svg{width:56px;height:56px;color:var(--primary-dark);opacity:.75}
 
-/* ═══ الماء — ألوانه متغيرات، تخصيصها ممكن لكل بطاقة ═══ */
-.svc-banner-body{position:relative;overflow:hidden;
-  --w-top:#BFDBFE; --w-deep:#93C5FD;
-  padding:22px 24px;display:flex;flex-direction:column;justify-content:center;
-  background:#fff}
-.svc-banner-body > *{position:relative;z-index:2}
+/* ═══ الجهة البيضاء — شفافة لكي يظهر الماء خلفها ═══
+   (الماء z1 يرسم فوق أبيض البطاقة، والمحتوى z2 فوق الماء) */
+.svc-banner-body{position:relative;z-index:2;
+  padding:22px 24px;display:flex;flex-direction:column;justify-content:center}
 
-/* جسم الماء — يرتفع بسطح مستوٍ هادئ */
-.svc-banner-body::before{
-  content:'';position:absolute;left:0;right:0;bottom:0;height:0;z-index:1;
+/* ═══ الماء — جسم يرتفع + سطح متموج دائم الحركة ═══ */
+.wave-body{position:absolute;left:0;right:0;bottom:0;height:0;z-index:1;
   background:linear-gradient(180deg,var(--w-top),var(--w-deep));
   transition:height .9s cubic-bezier(.2,.8,.2,1);
   pointer-events:none}
+.wave-top{position:absolute;left:0;right:0;bottom:0;height:0;z-index:1;
+  pointer-events:none;color:var(--w-top);
+  transition:height .9s cubic-bezier(.2,.8,.2,1)}
+.wave-top svg{position:absolute;bottom:0;left:0;width:200%;height:24px;
+  animation:svcWave 3.2s linear infinite}
+.wave-top path{fill:currentColor}
+@keyframes svcWave{to{transform:translateX(-50%)}}
 
-/* لمعة سطح رفيعة ترافق الماء أثناء الصعود */
-.svc-banner-body::after{
-  content:'';position:absolute;left:0;right:0;bottom:0;z-index:1;
-  height:6px;background:linear-gradient(180deg,rgba(255,255,255,.55),transparent);
-  transition:bottom .9s cubic-bezier(.2,.8,.2,1);
-  pointer-events:none}
+.svc-banner:hover .wave-body{height:82%}
+.svc-banner:hover .wave-top{height:calc(82% + 20px)}
 
-.svc-banner:hover .svc-banner-body::before{height:82%}
-.svc-banner:hover .svc-banner-body::after{bottom:82%}
+/* ★ النص يتحول أبيض تدريجياً فوق الماء */
+.svc-banner-body h2,.svc-banner-body p,.svc-banner-foot b{transition:color .6s}
+.svc-banner:hover .svc-banner-body h2,
+.svc-banner:hover .svc-banner-body p{color:#fff}
+.svc-banner:hover .svc-banner-foot b{color:#E8F0FE}
 
-/* ★ البطاقة الوردية — ماء وردي يطابق صورة العطر النسائي */
-.svc-banner.tint-pink .svc-banner-body{--w-top:#FBCFE8;--w-deep:#F9A8D4}
+.svc-banner-body h2{font-size:1.2rem;margin-bottom:8px}
+.svc-banner-body p{font-size:.92rem;margin-bottom:14px}
 
-.svc-banner-body h2{color:var(--dark);font-size:1.2rem;margin-bottom:8px}
-.svc-banner-body p{color:var(--muted);font-size:.92rem;margin-bottom:14px}
-
+/* ★ سهم دائري بدل زر الطلب — البطاقة كلها قابلة للنقر */
 .svc-banner-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.svc-banner-foot b{color:var(--primary-dark);font-size:1.1rem}
-.svc-banner-btn{padding:9px 20px;border:none;border-radius:999px;
+.svc-banner-foot b{font-size:1.1rem}
+.svc-banner-go{width:40px;height:40px;border-radius:50%;flex-shrink:0;
   background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-  color:#fff;font-weight:800;font-size:.88rem;cursor:pointer;font-family:inherit;
-  box-shadow:0 5px 14px rgba(37,99,235,.3);transition:transform .2s,box-shadow .2s}
-.svc-banner-btn:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(37,99,235,.45)}
+  color:#fff;display:grid;place-items:center;font-weight:800;font-size:1rem;
+  transition:transform .2s}
+.svc-banner:hover .svc-banner-go{transform:translateX(-4px)}
+.svc-banner.flip:hover .svc-banner-go{transform:translateX(4px)}
 
-/* قسم النموذج */
+/* ═══ قسم النموذج ═══ */
 .svc-form-sec{max-width:680px;margin:auto;padding:6px 20px 60px}
 .svc-form-box{background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:26px 26px}
 .svc-form-box h2{color:var(--dark);margin:4px 0 10px;font-size:1.25rem}
@@ -83,7 +94,7 @@ body.svc-page{animation:pageIn .5s ease-out}
 .svc-send:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(37,99,235,.45)}
 .svc-send:disabled{opacity:.6;transform:none}
 
-/* ★ الموبايل */
+/* ═══ الموبايل ═══ */
 @media(max-width:680px){
   .svc-hero{padding:30px 16px 22px}
   .svc-hero h1{font-size:1.35rem}
@@ -95,3 +106,17 @@ body.svc-page{animation:pageIn .5s ease-out}
   .svc-form-sec{padding:4px 14px 50px}
   .svc-form-box{padding:20px 18px}
 }
+.footer-social{display:flex;gap:12px;justify-content:center;margin-top:16px;flex-wrap:wrap}
+.social-link{display:inline-flex;align-items:center;gap:8px;
+  padding:10px 20px;border-radius:999px;
+  background:#fff;border:1px solid #E2E8F0;
+  font-weight:700;font-size:.9rem;text-decoration:none;
+  box-shadow:0 1px 4px rgba(15,23,42,.06);
+  transition:transform .2s,box-shadow .2s,border-color .2s}
+.social-link svg{width:18px;height:18px;flex-shrink:0}
+.social-link.fb{color:#1877F2}
+.social-link.fb svg{fill:#1877F2}
+.social-link.msgr{color:#A334FA}
+.social-link.msgr svg{fill:#A334FA}
+.social-link.wapp{color:#25D366}
+.social-link.wapp svg{stroke:#25D366;fill:none;stroke-width:1.8}

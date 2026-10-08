@@ -19,7 +19,7 @@
       <img src="images/logo.png" alt="Golden Store">
     </a>
     <div class="header-actions">
-      <a class="fb-btn" href="https://www.facebook.com/profile.php?id=61552913377312" target="_blank" rel="noopener" aria-label="صفحتنا على فيسبوك">
+      <a class="fb-btn" href="https://www.facebook.com/TIFALFALE" target="_blank" rel="noopener" aria-label="صفحتنا على فيسبوك">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
       </a>
       <a class="lang-btn" href="index.html" style="text-decoration:none;display:flex;align-items:center;justify-content:center" aria-label="العودة إلى الصفحة الرئيسية">
@@ -89,22 +89,30 @@ const SVC_IMAGES = {
   'ملء الروائح — رجالي':  '/images/svc-men.jpg'
 };
 
-/* ═══ التحميل والعرض ═══ */
+/* ═══ التحميل والعرض — بطاقات بطبقتي ماء ═══ */
 async function loadServices(){
   const { data } = await db.from('services').select('*').eq('is_active', true);
   services = data || [];
   $('#svc-list').innerHTML = services.map((s, i) => `
-    <div class="svc-banner ${i % 2 ? 'flip' : ''} ${s.name.includes('نسائي') ? 'tint-pink' : ''}">
+    <div class="svc-banner ${i % 2 ? 'flip' : ''} ${s.name.includes('نسائي') ? 'tint-pink' : ''}"
+         onclick="openForm(${s.id})" style="cursor:pointer">
       <div class="svc-banner-img">${SVC_IMAGES[s.name]
-        ? `<img src="${SVC_IMAGES[s.name]}" alt="${s.name}" loading="lazy" onerror="this.parentElement.innerHTML='🎁'">`
+        ? `<img src="${SVC_IMAGES[s.name]}" alt="${s.name}" loading="lazy" onerror="this.parentElement.innerHTML=svcIcon(s)">`
         : svcIcon(s)}</div>
       <div class="svc-banner-body">
         <h2>${s.name}</h2>
         <p>${s.description || ''}</p>
         <div class="svc-banner-foot">
           <b>${s.price ? money(s.price) : 'حسب الطلب'}</b>
-          <button class="svc-banner-btn" onclick="openForm(${s.id})">اطلب الخدمة ←</button>
+          <span class="svc-banner-go">←</span>
         </div>
+      </div>
+      <div class="wave-body"></div>
+      <div class="wave-top">
+        <svg viewBox="0 0 1200 24" preserveAspectRatio="none">
+          <path d="M0 12 Q75 0 150 12 T300 12 T450 12 T600 12 T750 12 T900 12 T1050 12 T1200 12 V24 H0 Z"
+                fill="currentColor"/>
+        </svg>
       </div>
     </div>`).join('');
 }
@@ -143,7 +151,7 @@ function openForm(id){
   $('#svc-form-sec').scrollIntoView({behavior:'smooth'});
 }
 
-/* ★ النقر يضيء الأزرار مباشرة — بلا إعادة بناء النموذج */
+/* ★ النقر يضيء الأزرار مباشرة */
 function pick(group, i){
   picks[group] = i;
   document.querySelectorAll(`[data-group="${group}"] .chip`)
