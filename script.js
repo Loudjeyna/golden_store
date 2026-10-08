@@ -556,7 +556,6 @@ function showToast(msg, type=''){
   const tt = $('#toast'); tt.textContent = msg; tt.className = 'toast show ' + type;
   clearTimeout(toastT); toastT = setTimeout(()=>tt.classList.remove('show'), 2500);
 }
-
 /* ═══ التشغيل + البث الحيّ ═══ */
 applyLang();
 loadAll();
@@ -567,7 +566,6 @@ db.channel('store')
   .subscribe(status => console.log('🔌 حالة البث:', status));
 setInterval(loadAll, 30000);
 
-/* ═══ الوضع الليلي ═══ */
 /* ═══ الوضع الليلي/النهاري ═══ */
 function applyTheme(){
   const light = localStorage.getItem('store_theme') === 'light';
@@ -580,15 +578,3 @@ function toggleTheme(){
   applyTheme();
 }
 applyTheme();
-/* ═══ ستارة الدخول — مرة واحدة لكل جلسة ═══ */
-/* ═══ ستارة سينمائية — مرة لكل جلسة ═══ */
-
-
-// إذا كانت الجلسة قد شاهدتها: تُحذف فوراً بلا حركة (لا وميض)
-if (sessionStorage.getItem('intro_done')) {
-  const s = document.getElementById('intro-splash');
-  if (s) s.remove();
-} else {
-  // حماية إضافية: لو حدث خطأ ما — الستارة لا تحبس الزائر أبداً
-  setTimeout(() => skipIntro(), 5000);
-}
