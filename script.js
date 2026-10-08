@@ -177,7 +177,7 @@ const VARIANT_COLOR_IMAGES = {
   },
   'سماعة خيط': {
     'Hoco':    '/images/earphone-wired-hoco.webp',
-    'Samsung': '/images/earphone-wired-sm.webp'
+    'Sumsung': '/images/earphone-wired-sm.webp'
   },
   'كابل شحن': {
     'Type-C':    '/images/cable-typec.jpg',
@@ -318,10 +318,11 @@ function cardHTML(p) {
   return `
   <article class="card" onclick="openModal(${p.id})">
     <div class="card-img">
-      ${img
-        ? `<img src="${imgURL(img)}" alt="${p.name}" loading="lazy" onerror="this.nextElementSibling.style.display='grid';this.remove()">
-           <div class="ph" style="display:none">${icon('default')}</div>`
-        : `<div class="ph">${icon('default')}</div>`}
+     ${img
+  ? `<div class="backdrop" style="background-image:url('${imgURL(img)}')"></div>
+     <img src="${imgURL(img)}" alt="${p.name}" loading="lazy" onerror="this.nextElementSibling.style.display='grid';this.remove()">
+     <div class="ph" style="display:none">${icon('default')}</div>`
+  : `<div class="ph">${icon('default')}</div>`}
       <div class="badges">${badges.join('')}</div>
     </div>
     <div class="card-body">

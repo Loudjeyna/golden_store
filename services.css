@@ -1,33 +1,110 @@
-/* ═══ صفحة الخدمات ═══ */
-body.svc-page{animation:pageIn .5s ease-out}
-@keyframes pageIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+/* ═══ صفحة الخدمات — مُعَيَّنة لتطابق style.css (الوضع الداكن بالذهب) ═══ */
+@import url("style.css");
 
-.svc-hero{text-align:center;padding:40px 20px 28px;background:linear-gradient(180deg,#EAF2FE,transparent)}
-.svc-hero h1{font-size:1.6rem;color:var(--dark)}
-.svc-hero p{color:var(--muted);margin-top:6px;font-size:.95rem}
+:root{
+  --primary:#FACC15;
+  --primary-dark:#EAB308;
+  --gold-soft:#FDE68A;
+  --gold-deep:#B45309;
+  --dark:#F8FAFC;
+  --text:#F5F5F5;
+  --muted:#A7A7A7;
+  --bg:#070707;
+  --bg-2:#111111;
+  --panel:#151515;
+  --panel-strong:#1D1D1D;
+  --line:#2B2B2B;
+  --danger:#EF4444;
+  --success:#22C55E;
+  --radius:20px;
+  --shadow:0 18px 42px rgba(0,0,0,.42);
+  --shadow-h:0 24px 52px rgba(0,0,0,.58);
+  --glow:0 0 0 1px rgba(250,204,21,.28),0 12px 30px rgba(250,204,21,.15);
+  --gold-grad:linear-gradient(135deg,#FDE68A,#FACC15 52%,#EAB308);
+  --ease:cubic-bezier(.22,.8,.24,1);
+  --ease-spring:cubic-bezier(.34,1.56,.64,1);
+}
 
-/* ═══ بطاقات الخدمات — صفوف متناوبة ═══ */
-.svc-wrap{max-width:900px;margin:auto;padding:10px 20px 40px;display:flex;flex-direction:column;gap:28px}
+body.svc-page{
+  background:
+    radial-gradient(circle at top, rgba(250,204,21,.09), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(250,204,21,.05), transparent 26%),
+    var(--bg);
+  background-attachment:fixed;
+  color:var(--text);
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+body.svc-page::selection{background:var(--primary);color:#0A0A0A}
 
-/* ★ البطاقة: نظام الماء — ألوانه متغيرات، النسائي وردي */
-.svc-banner{position:relative;display:grid;grid-template-columns:0.9fr 1.1fr;gap:0;
-  background:#fff;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);
+/* شريط التمرير — مطابق لـ style.css */
+*{scrollbar-width:thin;scrollbar-color:#3a3a3a transparent}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:#2f2f2f;border-radius:999px}
+::-webkit-scrollbar-thumb:hover{background:var(--primary)}
+
+/* ═══ الصورة التعريفيّة (hero) — متناسقة مع class hero في style.css ═══ */
+.svc-hero{
+  position:relative;
+  text-align:center;
+  padding:90px 20px 54px;
+  background:
+    url('images/hero_back.png') center 30%/min(480px,70vw) auto no-repeat,
+    radial-gradient(ellipse at center, rgba(250,204,21,.2) 0%, rgba(10,10,10,.88) 38%, #050505 75%);
+  border-bottom:1px solid rgba(255,255,255,.04);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.02);
+  overflow:hidden;
+}
+.svc-hero::before{content:"";position:absolute;left:50%;top:-120px;width:520px;height:520px;
+  transform:translateX(-50%);background:radial-gradient(circle,rgba(250,204,21,.18),transparent 65%);
+  filter:blur(30px);animation:breathe 6s ease-in-out infinite;pointer-events:none}
+.svc-hero>*{position:relative}
+@keyframes breathe{50%{opacity:.5;transform:translateX(-50%) scale(1.12)}}
+.svc-hero h1{
+  font-size:2.6rem;letter-spacing:-.04em;line-height:1.1;
+  background:linear-gradient(180deg,#FFFFFF 30%,#FDE68A);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;color:#F8FAFC;
+  animation:rise .8s var(--ease) both;
+  margin:0;
+}
+.svc-hero p{color:var(--muted);margin:8px 0 0;font-size:1.02rem;animation:rise .8s .12s var(--ease) both}
+
+@keyframes rise{from{opacity:0;transform:translateY(18px)}}
+
+/* ═══ بطاقات الخدمات — صفوف متناوبة 𝄜 مطابقة لنمط card-v1 في style.css 𝄜 */
+.svc-wrap{max-width:1400px;margin:auto;padding:34px 20px 6px;display:flex;flex-direction:column;gap:28px}
+
+/* ★ البطاقة: نظام الماء — ألوانها متغيرات من style.css */
+.svc-banner{
+  position:relative;
+  display:grid;
+  grid-template-columns:0.9fr 1.1fr;
+  gap:0;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
   cursor:pointer;
-  --w-top:#BFDBFE; --w-deep:#93C5FD;
-  transition:transform .3s,box-shadow .3s}
-.svc-banner.tint-pink{--w-top:#FBCFE8;--w-deep:#F9A8D4}
+  transition:transform .3s,box-shadow .3s;
+}
 .svc-banner:hover{transform:translateY(-4px);box-shadow:0 14px 34px rgba(37,99,235,.15)}
 .svc-banner.flip{direction:ltr}
 .svc-banner.flip > *{direction:rtl}
 
-.svc-banner-img{position:relative;z-index:2;min-height:180px;
+.svc-banner-img{
+  position:relative;z-index:2;min-height:180px;
   background:linear-gradient(135deg,#E8F0FE,#DBEAFE);
-  display:grid;place-items:center;overflow:hidden}
+  display:grid;place-items:center;overflow:hidden
+}
 .svc-banner-img img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
 .svc-banner-img svg{width:56px;height:56px;color:var(--primary-dark);opacity:.75}
 
 /* ═══ الجهة البيضاء — شفافة لكي يظهر الماء خلفها ═══
-   (الماء z1 يرسم فوق أبيض البطاقة، والمحتوى z2 فوق الماء) */
+   (الماء z1 يرسم فوق لون الخلفية، والمحتوى z2 فوق الماء) */
 .svc-banner-body{position:relative;z-index:2;
   padding:22px 24px;display:flex;flex-direction:column;justify-content:center}
 
@@ -47,50 +124,105 @@ body.svc-page{animation:pageIn .5s ease-out}
 .svc-banner:hover .wave-body{height:82%}
 .svc-banner:hover .wave-top{height:calc(82% + 20px)}
 
-/* ★ النص يتحول أبيض تدريجياً فوق الماء */
-.svc-banner-body h2,.svc-banner-body p,.svc-banner-foot b{transition:color .6s}
+/* ★ النصوص داخل البطاقة — متناسقة مع style.css */
+.svc-banner-body{position:relative;z-index:2;
+  padding:22px 24px;display:flex;flex-direction:column;justify-content:center}
+.svc-banner-body h2{color:var(--dark);font-size:1.2rem;margin:0 0 8px}
+.svc-banner-body p{color:var(--muted);font-size:.92rem;margin:0 0 14px}
+.svc-banner-body b{color:var(--primary);font-weight:800}
+
+/* الماء — جسم يرتفع + سطح متموج دائم الحركة */
+.wave-body{position:absolute;left:0;right:0;bottom:0;height:0;z-index:1;
+  background:linear-gradient(180deg,var(--w-top),var(--w-deep));
+  transition:height .9s cubic-bezier(.2,.8,.2,1);
+  pointer-events:none}
+.wave-top{position:absolute;left:0;right:0;bottom:0;height:0;z-index:1;
+  pointer-events:none;color:var(--w-top);
+  transition:height .9s cubic-bezier(.2,.8,.2,1)}
+.wave-top svg{position:absolute;bottom:0;left:0;width:200%;height:24px;
+  animation:svcWave 3.2s linear infinite}
+.wave-top path{fill:currentColor}
+@keyframes svcWave{to{transform:translateX(-50%)}}
+
+.svc-banner:hover .wave-body{height:82%}
+.svc-banner:hover .wave-top{height:calc(82% + 20px)}
+
+/* النص يتحول أبيض/ذهبي تدريجيًا فوق الماء */
 .svc-banner:hover .svc-banner-body h2,
 .svc-banner:hover .svc-banner-body p{color:#fff}
-.svc-banner:hover .svc-banner-foot b{color:#E8F0FE}
+.svc-banner:hover .svc-banner-body b{color:var(--gold-soft)}
 
-.svc-banner-body h2{font-size:1.2rem;margin-bottom:8px}
-.svc-banner-body p{font-size:.92rem;margin-bottom:14px}
-
-/* ★ سهم دائري بدل زر الطلب — البطاقة كلها قابلة للنقر */
+/* ★ سهم الطلب (والبطاقة كلها قابلة للنقر) — مطابق لـ .go في style.css */
 .svc-banner-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .svc-banner-foot b{font-size:1.1rem}
-.svc-banner-go{width:40px;height:40px;border-radius:50%;flex-shrink:0;
-  background:linear-gradient(135deg,var(--primary),var(--primary-dark));
-  color:#fff;display:grid;place-items:center;font-weight:800;font-size:1rem;
-  transition:transform .2s}
-.svc-banner:hover .svc-banner-go{transform:translateX(-4px)}
-.svc-banner.flip:hover .svc-banner-go{transform:translateX(4px)}
+.svc-banner-go{
+  position:relative;overflow:hidden;
+  padding:14px 34px;border:none;border-radius:999px;
+  background:var(--gold-grad);color:#0A0A0A;font-weight:900;font-size:1rem;
+  box-shadow:0 14px 28px rgba(250,204,21,.25);
+  transition:box-shadow .3s,transform .3s var(--ease-spring);
+  cursor:pointer;
+}
+.svc-banner-go::after{content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);
+  transform:skewX(-20deg);transition:left .6s var(--ease)}
+.svc-banner-go:hover{box-shadow:0 18px 40px rgba(250,204,21,.45);transform:translateY(-3px)}
+.svc-banner-go:hover::after{left:140%}
+.svc-banner-go.ghost{background:rgba(10,10,10,.28);color:var(--primary);border:1.5px solid rgba(250,204,21,.7);
+  box-shadow:0 4px 14px rgba(250,204,21,.12);backdrop-filter:blur(6px)}
+.svc-banner-go.ghost::after{display:none}
+.svc-banner-go.ghost:hover{background:var(--primary);color:#0A0A0A;box-shadow:0 12px 26px rgba(250,204,21,.3)}
 
-/* ═══ قسم النموذج ═══ */
+
+/* ═══ قسم النموذج — متناسب مع style.css ═══ */
 .svc-form-sec{max-width:680px;margin:auto;padding:6px 20px 60px}
-.svc-form-box{background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:26px 26px}
+.svc-form-box{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:20px;
+  box-shadow:var(--shadow);
+  padding:26px 26px;
+}
 .svc-form-box h2{color:var(--dark);margin:4px 0 10px;font-size:1.25rem}
 .svc-form-box .m-desc{color:var(--muted);font-size:.93rem;margin-bottom:8px}
 
 .svc-sec-title{display:flex;align-items:center;gap:8px;font-weight:800;
   color:var(--dark);font-size:.92rem;margin:18px 0 10px}
 .svc-sec-title::after{content:'';flex:1;height:1px;background:var(--line)}
-.size-chip{border:2px solid var(--line);background:#fff;border-radius:14px;
+
+/* الخيار (size-chip) — مطابق لـ style.css */
+.size-chip{
+  border:2px solid var(--line);
+  background:#fff;border-radius:14px;
   padding:10px 20px;font-weight:800;font-size:.92rem;color:var(--text);
-  cursor:pointer;font-family:inherit;transition:.2s}
+  cursor:pointer;
+  font-family:inherit;
+  transition:.2s;
+}
 .size-chip:hover{border-color:var(--primary)}
-.size-chip.active{border-color:var(--primary);background:var(--primary);color:#fff;
-  box-shadow:0 4px 12px rgba(37,99,235,.3)}
+.size-chip.active{
+  border-color:var(--primary);
+  background:var(--primary);
+  color:#fff;
+  box-shadow:0 4px 12px rgba(37,99,235,.3);
+}
+
 .svc-form{margin-top:6px}
-.svc-form input{width:100%;padding:12px 14px;border:2px solid var(--line);
+.svc-form input{
+  width:100%;padding:12px 14px;border:2px solid var(--line);
   border-radius:12px;font-family:inherit;font-size:16px;margin-bottom:10px;
-  background:#F8FAFC;transition:border-color .2s}
+  background:#F8FAFC;transition:border-color .2s;
+}
 .svc-form input:focus{outline:none;border-color:var(--primary);
   box-shadow:0 0 0 3px rgba(37,99,235,.15)}
-.svc-send{width:100%;padding:13px;border:none;border-radius:14px;
+
+.svc-send{
+  width:100%;padding:13px;border:none;border-radius:14px;
   background:linear-gradient(135deg,var(--primary),var(--primary-dark));
   color:#fff;font-size:1rem;font-weight:800;cursor:pointer;font-family:inherit;
-  box-shadow:0 6px 18px rgba(37,99,235,.35);transition:transform .2s,box-shadow .2s}
+  box-shadow:0 6px 18px rgba(37,99,235,.35);
+  transition:transform .2s,box-shadow .2s;
+}
 .svc-send:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(37,99,235,.45)}
 .svc-send:disabled{opacity:.6;transform:none}
 
@@ -106,17 +238,83 @@ body.svc-page{animation:pageIn .5s ease-out}
   .svc-form-sec{padding:4px 14px 50px}
   .svc-form-box{padding:20px 18px}
 }
+
+/* ═══ التذييل — مطابق لـ style.css ═══ */
 .footer-social{display:flex;gap:12px;justify-content:center;margin-top:16px;flex-wrap:wrap}
-.social-link{display:inline-flex;align-items:center;gap:8px;
+.social-link{
+  display:inline-flex;align-items:center;gap:8px;
   padding:10px 20px;border-radius:999px;
-  background:#fff;border:1px solid #E2E8F0;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(250,204,21,.16);
   font-weight:700;font-size:.9rem;text-decoration:none;
-  box-shadow:0 1px 4px rgba(15,23,42,.06);
-  transition:transform .2s,box-shadow .2s,border-color .2s}
-.social-link svg{width:18px;height:18px;flex-shrink:0}
+
+/* ═══ نافذة المنتج: الصورة بجانب الوصف + مقاس ثابت للصورة ═══ */
+.modal{scrollbar-width:none}
+.modal::-webkit-scrollbar{display:none}
+
+@media(min-width:760px){
+  .modal,.modal.single{
+    max-width:940px;
+    height:min(86vh,620px);
+    max-height:none;
+    display:flex;flex-direction:row;align-items:stretch;
+    overflow:hidden;
+  }
+  .m-img{
+    flex:0 0 46%;
+    height:auto;
+    min-height:0;
+    padding:20px;
+  }
+  .m-img::after{display:none}
+  .m-img img{
+    width:100%;height:100%;
+    object-fit:contain;
+    filter:drop-shadow(0 14px 30px rgba(0,0,0,.5));
+  }
+  .m-info{
+    flex:1;min-width:0;min-height:0;
+    overflow-y:auto;
+    padding:34px 28px 28px;
+    display:flex;flex-direction:column;justify-content:center;
+  }
+  body.light-mode .m-img{background:#F5F5F5}
+}
+
+@media(max-width:759px){
+  .m-img{height:auto;aspect-ratio:1/1;max-height:46vh;padding:12px}
+  .m-img img{object-fit:contain}
+}
+
+/* ═══ بطاقات المنتجات: الصورة كاملة بدون قص ═══ */
+.card-img{height:auto;aspect-ratio:4/3}
+.card-img .backdrop{position:absolute;inset:-20px;background-size:cover;background-position:center;
+  filter:blur(22px) brightness(.5) saturate(1.3);transform:scale(1.1)}
+.card-img img{position:relative;z-index:1;object-fit:contain;padding:8px}
+.card-img::after{z-index:2}
+.card-img .badges{z-index:3}
+  box-shadow:0 1px 4px rgba(15,23,42,.08);
+  transition:transform .3s var(--ease-spring),box-shadow .25s,border-color .25s;
+}
+.social-link svg{width:18px;height:18px;flex-shrink:0;transition:transform .3s var(--ease-spring)}
+.social-link:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(250,204,21,.25)}
 .social-link.fb{color:#1877F2}
 .social-link.fb svg{fill:#1877F2}
 .social-link.msgr{color:#A334FA}
 .social-link.msgr svg{fill:#A334FA}
 .social-link.wapp{color:#25D366}
 .social-link.wapp svg{stroke:#25D366;fill:none;stroke-width:1.8}
+body.dark-mode .footer-social{background:transparent}
+body.dark-mode .social-link{background:#0F172A;border-color:#1E293B;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+body.dark-mode .social-link.fb{color:#60A5FA}
+body.dark-mode .social-link.fb svg{fill:#60A5FA}
+body.dark-mode .social-link.msgr{color:#C084FC}
+body.dark-mode .social-link.msgr svg{fill:#C084FC}
+body.dark-mode .social-link.wapp{color:#4ADE80}
+body.dark-mode .social-link.wapp svg{stroke:#4ADE80}
+
+@media(max-width:680px){
+  .footer-social{gap:8px;margin-top:12px}
+  .social-link{padding:8px 14px;font-size:.85rem}
+  .social-link svg{width:16px;height:16px}
+}
