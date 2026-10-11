@@ -1,7 +1,7 @@
 /* ═══ الاتصال ═══ */
 const SUPABASE_URL = 'https://cqkbqcvjjrirbrkyodbv.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_vFSo6qX4xD4wLLSPPTJhLA_KSIslSqu';   // ← ★ Publishable key ★
-const OWNER_WHATSAPP = '213778663946';
+const OWNER_WHATSAPP = '213672072270';
 const MESSENGER_LINK = 'https://m.me/TIFALFALE';
 let lastOrderMsg = '';
 
