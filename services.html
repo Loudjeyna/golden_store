@@ -29,10 +29,17 @@
   </div>
 </header>
 
-<section class="svc-hero">
-  <div class="svc-hero-text">
-    <h1>خدمات Golden Store</h1>
+<section class="hero">
+  <div class="hero-media">
+    <img src="images/hero_back.png" alt="Golden Store">
+  </div>
+  <div class="hero-text">
+    <span class="kicker">✦ OUR SERVICES ✦</span>
+    <h1 id="svc-hero-title">خدمات Golden&nbsp;Store</h1>
     <p>لمسات مختصة تصنع الفرق — اختر خدمتك وسننجزها لك بعناية</p>
+    <div class="hero-actions">
+      <button class="go" onclick="location.href='index.html'">تصفح المتجر 🛍️</button>
+    </div>
   </div>
 </section>
 
@@ -46,7 +53,6 @@
 
 <div id="toast" class="toast"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 /* ═══ إعدادات ═══ */
 const SUPABASE_URL = 'https://cqkbqcvjjrirbrkyodbv.supabase.co';
@@ -56,6 +62,9 @@ const OWNER_WHATSAPP = '213778663946';
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = s => document.querySelector(s);
 const money = n => Number(n).toLocaleString('en-US') + ' دج';
+
+/* تطبيق الثيم المحفوظ — نفس مفتاح index.html */
+document.body.classList.toggle('light-mode', localStorage.getItem('store_theme') === 'light');
 
 /* ═══ الخيارات ═══ */
 const WRAP_OPTIONS = {

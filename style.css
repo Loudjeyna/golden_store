@@ -147,7 +147,7 @@ header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px
   background:radial-gradient(circle,var(--gold-deep),transparent 70%);
 }
 .hero-media img{
-  position:relative;width:100%;aspect-ratio:4/5;object-fit:cover;
+  position:relative;width:100%;aspect-ratio:6/5;object-fit:cover;
   border-radius:200px 200px 26px 26px;
   box-shadow:var(--shadow-h);
   transition:transform .8s var(--ease);
@@ -543,7 +543,7 @@ footer{text-align:center;padding:36px 26px;color:var(--muted);font-size:.86rem;
   .hero{flex-direction:column;gap:26px;padding:36px 18px 30px;text-align:center}
   .hero-media{flex:0 0 auto;max-width:240px}
   .hero-media::before{transform:translate(-10px,10px);border-radius:140px 140px 22px 22px}
-  .hero-media img{border-radius:140px 140px 22px 22px;aspect-ratio:4/5}
+  .hero-media img{border-radius:140px 140px 22px 22px;aspect-ratio:6/5}
   .hero-text{text-align:center}
   .hero-text p{margin-inline:auto}
   .hero-actions{justify-content:center}

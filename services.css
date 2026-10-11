@@ -16,38 +16,7 @@
 .fb-btn:hover svg{transform:scale(1.1)}
 .fb-btn svg{transition:transform .3s var(--ease-spring)}
 
-/* ═══ الهيرو ═══ */
-.svc-hero{
-  position:relative;text-align:center;
-  padding:clamp(64px,10vh,104px) 24px clamp(44px,7vh,68px);
-  background:
-    radial-gradient(ellipse 520px 320px at center 58%, rgba(9,9,12,.55), rgba(9,9,12,.24) 52%, transparent 74%),
-    url('images/hero_back.png') center 30%/min(460px,68vw) auto no-repeat,
-    radial-gradient(ellipse at center, rgba(227,194,124,.16) 0%, rgba(11,11,14,.9) 40%, var(--bg) 78%);
-  border-bottom:1px solid var(--line);
-  overflow:hidden;
-}
-.svc-hero::before{content:"";position:absolute;left:50%;top:-140px;width:560px;height:560px;
-  transform:translateX(-50%);background:radial-gradient(circle,rgba(227,194,124,.14),transparent 65%);
-  filter:blur(34px);animation:breathe 6s ease-in-out infinite;pointer-events:none}
-.svc-hero>*{position:relative}
-@keyframes breathe{50%{opacity:.5;transform:translateX(-50%) scale(1.1)}}
-.svc-hero h1{
-  font-size:clamp(2rem,1.4rem + 3vw,3rem);font-weight:800;line-height:1.15;letter-spacing:-.015em;
-  background:linear-gradient(180deg,#FDFBF6 25%,#E3C27C 115%);
-  -webkit-background-clip:text;background-clip:text;
-  -webkit-text-fill-color:transparent;color:#FDFBF6;
-  animation:rise .7s var(--ease) both;margin:0;
-}
-.svc-hero p{color:var(--muted);margin:12px 0 0;font-size:clamp(1rem,.95rem + .3vw,1.12rem);
-  animation:rise .7s .12s var(--ease) both}
-body.light-mode .svc-hero{
-  background:
-    radial-gradient(ellipse 520px 320px at center 58%, rgba(9,9,12,.55), rgba(9,9,12,.24) 52%, transparent 74%),
-    url('images/hero_back.png') center 30%/min(460px,68vw) auto no-repeat,
-    linear-gradient(#0B0B0E,#0B0B0E);
-}
-body.light-mode .svc-hero p{color:#CBC4B6}
+/* ═══ الهيرو — يعتمد تصميم .hero من style.css مباشرة ═══ */
 
 /* ═══ بطاقات الخدمات — صفوف متناوبة مع موجة ذهبية ═══ */
 .svc-wrap{max-width:1080px;margin:auto;padding:clamp(30px,5vh,44px) 24px 8px;
@@ -140,7 +109,6 @@ body.light-mode .svc-hero p{color:#CBC4B6}
 
 /* ═══ الموبايل ═══ */
 @media(max-width:680px){
-  .svc-hero{padding:38px 16px 30px}
   .svc-wrap{padding:8px 14px 30px;gap:18px}
   .svc-banner{grid-template-columns:1fr;border-radius:20px}
   .svc-banner-img{min-height:170px}

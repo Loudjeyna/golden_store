@@ -13,7 +13,7 @@ const I18N = {
   ar: {
     dir:'rtl',
     title:'Golden Store',
-    heroTitle:'أهلاً بك في Golden Store 💝',
+    heroTitle:'أهلاً بك في Golden\u00A0Store 💝',
     heroSub:'هدايا وإكسسوارات — أحدث المنتجات بين يديك',
     heroBtn:'تصفح الأقسام',
     heroServicesBtn:'خدماتنا',
@@ -56,7 +56,7 @@ const I18N = {
   en: {
     dir:'ltr',
     title:'Golden Store',
-    heroTitle:'Welcome to Golden Store 💝',
+    heroTitle:'Welcome to Golden\u00A0Store 💝',
     heroSub:'Gifts & accessories — the latest products at your fingertips',
     heroBtn:'Browse Categories',
     heroServicesBtn:'Our Services',
