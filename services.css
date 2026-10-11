@@ -68,6 +68,14 @@
 .svc-banner:hover .svc-banner-body p{color:#FDFBF6}
 .svc-banner:hover .svc-banner-body b{color:var(--gold-strong)}
 
+/* الوضع الفاتح: الموجة ذهبية فاتحة فوق بطاقة بيضاء، لذا يبقى النص داكناً فوقها
+   ليصح التباين — مع تعميق لون الموجة قليلاً ليظهر التأثير بوضوح */
+body.light-mode .svc-banner{--w-top:rgba(184,148,76,.32);--w-deep:rgba(184,148,76,.10)}
+body.light-mode .svc-banner.tint-pink{--w-top:rgba(202,118,150,.30);--w-deep:rgba(202,118,150,.09)}
+body.light-mode .svc-banner:hover .svc-banner-body h2{color:var(--text)}
+body.light-mode .svc-banner:hover .svc-banner-body p{color:var(--muted)}
+body.light-mode .svc-banner:hover .svc-banner-body b{color:var(--gold-strong)}
+
 /* سهم الطلب + السعر */
 .svc-banner-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .svc-banner-foot b{font-size:1.15rem}
