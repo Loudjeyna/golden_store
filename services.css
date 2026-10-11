@@ -57,11 +57,11 @@
   transition:height .9s cubic-bezier(.2,.8,.2,1);pointer-events:none}
 .wave-top{position:absolute;left:0;right:0;bottom:0;height:0;z-index:1;pointer-events:none;
   color:var(--w-top);transition:height .9s cubic-bezier(.2,.8,.2,1)}
-.wave-top svg{position:absolute;bottom:0;left:0;width:200%;height:24px;animation:svcWave 3.4s linear infinite}
+.wave-top svg{position:absolute;bottom:0;left:0;width:200%;height:420px;animation:svcWave 3.4s linear infinite}
 .wave-top path{fill:currentColor}
 @keyframes svcWave{to{transform:translateX(-50%)}}
-.svc-banner:hover .wave-body{height:82%}
-.svc-banner:hover .wave-top{height:calc(82% + 20px)}
+.svc-banner:hover .wave-body{height:92%}
+.svc-banner:hover .wave-top{height:calc(92% + 20px)}
 
 /* النص يتحوّل للون الفاتح فوق الموجة */
 .svc-banner:hover .svc-banner-body h2,
@@ -70,7 +70,7 @@
 
 /* الوضع الفاتح: الموجة ذهبية فاتحة فوق بطاقة بيضاء، لذا يبقى النص داكناً فوقها
    ليصح التباين — مع تعميق لون الموجة قليلاً ليظهر التأثير بوضوح */
-body.light-mode .svc-banner{--w-top:rgba(184,148,76,.32);--w-deep:rgba(184,148,76,.10)}
+body.light-mode .svc-banner{--w-top:rgba(53, 143, 234, 0.32);--w-deep:rgba(184,148,76,.10)}
 body.light-mode .svc-banner.tint-pink{--w-top:rgba(202,118,150,.30);--w-deep:rgba(202,118,150,.09)}
 body.light-mode .svc-banner:hover .svc-banner-body h2{color:var(--text)}
 body.light-mode .svc-banner:hover .svc-banner-body p{color:var(--muted)}

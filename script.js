@@ -99,7 +99,7 @@ const S = 'fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="
 const ICONS = {
   'هدايا': `<svg viewBox="0 0 24 24" ${S}><rect x="3" y="8" width="18" height="4" rx="1.2"/><path d="M5 12v7.5A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V12"/><path d="M12 8v13"/><path d="M12 8s-1.6-4.2-4.2-4.2a2.1 2.1 0 0 0 0 4.2"/><path d="M12 8s1.6-4.2 4.2-4.2a2.1 2.1 0 0 1 0 4.2"/></svg>`,
   'إكسسوارات الهاتف': `<svg viewBox="0 0 24 24" ${S}><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M10.5 18.5h3"/></svg>`,
-  'كفرات': `<svg viewBox="0 0 24 24" ${S}><rect x="7" y="2.5" width="10" height="19" rx="3"/><circle cx="12" cy="6" r="1.3"/><path d="M10.5 18.5h3"/></svg>`,
+  'antichoc': `<svg viewBox="0 0 24 24" ${S}><rect x="7" y="2.5" width="10" height="19" rx="3"/><circle cx="12" cy="6" r="1.3"/><path d="M10.5 18.5h3"/></svg>`,
   'شواحن وكوابل': `<svg viewBox="0 0 24 24" ${S}><path d="M9 2.5V8M15 2.5V8"/><path d="M7 8h10v2.8a5 5 0 0 1-10 0z"/><path d="M12 15.8V21"/></svg>`,
   'سماعات': `<svg viewBox="0 0 24 24" ${S}><path d="M4 17.5V13a8 8 0 0 1 16 0v4.5"/><rect x="3" y="14" width="4.5" height="7" rx="2"/><rect x="16.5" y="14" width="4.5" height="7" rx="2"/></svg>`,
   'إكسسوارات بنات': `<svg viewBox="0 0 24 24" ${S}><path d="M12 3.5l1.7 4.3 4.3 1.7-4.3 1.7L12 15.5l-1.7-4.3L6 9.5l4.3-1.7z"/><path d="M18.5 14.5l.9 2.1 2.1.9-2.1.9-.9 2.1-.9-2.1-2.1-.9 2.1-.9z"/><path d="M6 17l.7 1.6 1.6.7-1.6.7L6 21.6l-.7-1.6-1.6-.7 1.6-.7z"/></svg>`,

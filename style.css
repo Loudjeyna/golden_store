@@ -5,32 +5,31 @@
 *{margin:0;padding:0;box-sizing:border-box}
 
 :root{
-  /* اللوحة الداكنة (الافتراضية) */
-  --bg:#0B0B0E;
-  --surface:#15151B;
-  --surface-2:#1B1B23;
-  --surface-3:#22222B;
-  --text:#F3F0E9;
-  --muted:#ABA495;
+  /* ═══ أسود دافئ فاخر + ذهبي ═══ */
+  --bg:#0A0908;
+  --surface:#141210;
+  --surface-2:#1B1815;
+  --surface-3:#242019;
+  --text:#F5F0E4;
+  --muted:#B5AC9B;
   --gold:#E3C27C;
   --gold-strong:#F0D6A0;
   --gold-deep:#B8944C;
-  --ink-on-gold:#211903;
-  --line:rgba(255,255,255,.08);
-  --line-strong:rgba(255,255,255,.14);
-  --gold-line:rgba(227,194,124,.30);
+  --ink-on-gold:#1A1403;
+  --line:rgba(255,255,255,.07);
+  --line-strong:rgba(255,255,255,.13);
+  --gold-line:rgba(227,194,124,.32);
   --danger:#E5484D;
   --success:#3DD68C;
   --radius:22px;
   --radius-lg:28px;
-  --shadow:0 10px 30px rgba(0,0,0,.32);
-  --shadow-h:0 18px 48px rgba(0,0,0,.5);
+  --shadow:0 10px 30px rgba(0,0,0,.5);
+  --shadow-h:0 18px 48px rgba(0,0,0,.65);
   --gold-grad:linear-gradient(135deg,#F6E7BF 0%,#E3C27C 48%,#C6A053 100%);
   --ease:cubic-bezier(.22,.8,.24,1);
   --ease-spring:cubic-bezier(.34,1.56,.64,1);
-  --header-bg:rgba(11,11,14,.72);
+  --header-bg:rgba(10,9,8,.75);
 }
-
 html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
 body{
   font-family:'Cairo',sans-serif;
@@ -274,7 +273,7 @@ header::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px
   border:1px solid var(--line-strong);background:var(--surface);border-radius:999px;
   padding:8px 18px;font-weight:700;font-size:.86rem;color:var(--text);
   transition:border-color .25s,background .25s,color .25s,transform .25s var(--ease-spring)}
-.crumb button:hover{border-color:var(--gold);background:rgba(227,194,124,.07);color:var(--gold);transform:translateY(-2px)}
+.crumb button:hover{border-color:var(--gold);background:rgba(201, 250, 8, 0.07);color:var(--gold);transform:translateY(-2px)}
 .crumb .cur{color:var(--gold);font-weight:800;display:inline-flex;align-items:center;gap:6px}
 
 /* ═══ شبكة المنتجات ═══ */
@@ -622,11 +621,11 @@ body.light-mode{
   --gold:#8F6E24;
   --gold-strong:#7A5C1B;
   --gold-deep:#B8944C;
-  --ink-on-gold:#FFF9EC;
+  --ink-on-gold:#211903;
   --line:rgba(39,34,26,.09);
   --line-strong:rgba(39,34,26,.16);
   --gold-line:rgba(143,110,36,.35);
-  --gold-grad:linear-gradient(135deg,#C9A557 0%,#B18A35 50%,#96721F 100%);
+  --gold-grad:linear-gradient(135deg,#F6E7BF 0%,#E3C27C 48%,#C6A053 100%);
   --shadow:0 10px 30px rgba(64,52,24,.08);
   --shadow-h:0 18px 44px rgba(64,52,24,.14);
   --header-bg:rgba(250,248,242,.8);
@@ -643,7 +642,7 @@ body.light-mode .hero-text h1{
   background:linear-gradient(180deg,#27221A 30%,#8F6E24 130%);
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:#27221A}
 body.light-mode .hero-media::after{opacity:.35}
-body.light-mode .go{color:#FFF9EC;box-shadow:0 10px 24px rgba(150,114,31,.25),inset 0 1px 0 rgba(255,255,255,.25)}
+body.light-mode .go{color:#211903;box-shadow:0 10px 24px rgba(150,114,31,.25),inset 0 1px 0 rgba(255,255,255,.25)}
 body.light-mode .go:hover{box-shadow:0 16px 34px rgba(150,114,31,.35),inset 0 1px 0 rgba(255,255,255,.25)}
 body.light-mode .go.ghost{background:rgba(255,255,255,.6);color:var(--gold);backdrop-filter:blur(8px)}
 body.light-mode .go.ghost:hover{background:#fff}
@@ -667,3 +666,4 @@ body.light-mode .order-ref{background:var(--surface-2)}
 body.light-mode .c-item:hover{background:rgba(184,148,76,.06)}
 body.light-mode footer{border-top-color:var(--line);background:linear-gradient(180deg,transparent,rgba(184,148,76,.04))}
 body.light-mode .social-link{background:#fff}
+

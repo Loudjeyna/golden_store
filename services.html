@@ -8,6 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
+<script src="particles.js"></script>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="services.css">
 <link rel="icon" href="images/logo.png" type="image/png">
@@ -112,16 +113,25 @@ async function loadServices(){
         <p>${s.description || ''}</p>
         <div class="svc-banner-foot">
           <b>${s.price ? money(s.price) : 'حسب الطلب'}</b>
-          <span class="svc-banner-go">←</span>
+          
         </div>
       </div>
-      <div class="wave-body"></div>
-      <div class="wave-top">
-        <svg viewBox="0 0 1200 24" preserveAspectRatio="none">
-          <path d="M0 12 Q75 0 150 12 T300 12 T450 12 T600 12 T750 12 T900 12 T1050 12 T1200 12 V24 H0 Z"
-                fill="currentColor"/>
-        </svg>
-      </div>
+           <div class="wave-body"></div>
+         <div class="wave-body"></div>
+      
+<div class="wave-top">
+  <svg viewBox="0 0 1200 80" preserveAspectRatio="none">
+    <path
+      d="M0 40
+         Q150 -10 300 40
+         T600 40
+         T900 40
+         T1200 40
+         V80 H0 Z"
+      fill="currentColor"
+    />
+  </svg>
+</div>
     </div>`).join('');
 }
 
