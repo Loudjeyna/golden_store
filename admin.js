@@ -1,7 +1,4 @@
-/* ═══ الاتصال ═══ */
-const SUPABASE_URL = 'https://cqkbqcvjjrirbrkyodbv.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_vFSo6qX4xD4wLLSPPTJhLA_KSIslSqu';
-
+/* ═══ الاتصال — الإعدادات الآن في config.js ═══ */
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = s => document.querySelector(s);
 const money = n => Number(n).toLocaleString('en-US') + ' دج';
@@ -33,8 +30,8 @@ async function enterPanel(){
   renderOrders();
   loadOrdersCache();
   startOrdersChannel();
-  renderServiceRequests();       // ★ طلبات الخدمات فور الدخول
-  startServiceRequestsChannel(); // ★ بث حي لطلبات الخدمات
+  renderServiceRequests();
+  startServiceRequestsChannel();
 }
 
 async function onLogin(e){
@@ -223,11 +220,14 @@ async function renderOrders(){
     return;
   }
   const cancelled = list.filter(o => o.status === 'ملغي').length;
-  const bulk = cancelled ? `
+  const bulk = `
   <div class="a-card" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-    <span style="color:var(--muted)">🧹 لديك ${cancelled} طلب ملغي</span>
-    <button class="o-btn danger" style="flex:0 0 auto;padding:10px 18px" onclick="delCancelledOrders()">🗑 حذف كل الطلبات الملغاة (${cancelled})</button>
-  </div>` : '';
+    <span style="color:var(--muted)">🧹 إدارة الطلبات — ${list.length} طلب${cancelled ? ` (منها ${cancelled} ملغي)` : ''}</span>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      ${cancelled ? `<button class="o-btn danger" style="flex:0 0 auto;padding:10px 18px" onclick="delCancelledOrders()">🗑 الملغاة فقط (${cancelled})</button>` : ''}
+      <button class="o-btn danger" style="flex:0 0 auto;padding:10px 18px" onclick="delAllOrders()">🗑 حذف كل الطلبات (${list.length})</button>
+    </div>
+  </div>`;
   $('#tab-orders').innerHTML = bulk + list.map(orderHTML).join('');
 }
 
@@ -261,11 +261,10 @@ function orderHTML(o){
     <div class="o-addr">📍 ${o.address}${o.notes ? ' — 📝 ' + o.notes : ''}</div>
     <div class="o-items">${items}</div>
     <div class="o-total"><span>المجموع</span><b>${money(o.total)}</b></div>
-    ${(actions.length || o.status === 'ملغي') ? `
     <div class="o-actions">
       ${actions.map(s => `<button class="o-btn ${s==='ملغي'?'danger':''}" onclick="setStatus('${o.id}','${s}')">${btnLabel(s)}</button>`).join('')}
-      ${o.status === 'ملغي' ? `<button class="o-btn danger" onclick="delOrder('${o.id}')">🗑 حذف نهائي</button>` : ''}
-    </div>` : ''}
+      <button class="o-btn danger" onclick="delOrder('${o.id}')" title="حذف نهائي">🗑</button>
+    </div>
   </div>`;
 }
 
@@ -294,6 +293,20 @@ async function delCancelledOrders(){
   if (error) return toast('تعذر الحذف: ' + error.message, true);
   toast('تم حذف ' + cancelled.length + ' طلب ملغي 🗑');
   renderOrders();
+}
+
+/* ★ حذف كل الطلبات — لتصفير بيانات الاختبار */
+async function delAllOrders(){
+  const { data: all } = await db.from('orders').select('id');
+  if (!all?.length) return toast('لا توجد طلبات');
+  if (!confirm('⚠️ حذف جميع الطلبات نهائياً؟ (' + all.length + ' طلب) — لا يمكن التراجع!')) return;
+  if (!confirm('متأكد تماماً؟ سيُحذف كل شيء الآن!')) return;
+  await db.from('order_items').delete().in('order_id', all.map(x => x.id));
+  const { error } = await db.from('orders').delete().in('id', all.map(x => x.id));
+  if (error) return toast('تعذر الحذف: ' + error.message, true);
+  toast('تم حذف ' + all.length + ' طلب 🗑');
+  renderOrders();
+  updateOrdersBadge([]);
 }
 
 function startOrdersChannel(){
@@ -334,11 +347,14 @@ async function renderServiceRequests(){
     return;
   }
   const cancelled = list.filter(r => r.status === 'ملغي').length;
-  const bulk = cancelled ? `
+  const bulk = `
   <div class="a-card" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
-    <span style="color:var(--muted)">🧹 لديك ${cancelled} طلب خدمة ملغي</span>
-    <button class="o-btn danger" style="flex:0 0 auto;padding:10px 18px" onclick="delCancelledSvcRequests()">🗑 حذف كل الطلبات الملغاة (${cancelled})</button>
-  </div>` : '';
+    <span style="color:var(--muted)">🧹 إدارة طلبات الخدمات — ${list.length} طلب${cancelled ? ` (منها ${cancelled} ملغي)` : ''}</span>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      ${cancelled ? `<button class="o-btn danger" style="flex:0 0 auto;padding:10px 18px" onclick="delCancelledSvcRequests()">🗑 الملغاة فقط (${cancelled})</button>` : ''}
+      <button class="o-btn danger" style="flex:0 0 auto;padding:10px 18px" onclick="delAllSvcRequests()">🗑 حذف الكل (${list.length})</button>
+    </div>
+  </div>`;
   $('#tab-svc-requests').innerHTML = bulk + list.map(svcReqHTML).join('');
 }
 
@@ -350,7 +366,6 @@ function updateSvcBadge(list){
 }
 
 function svcReqHTML(r){
-  /* تفاصيل الحقول الموجودة فقط — كل خدمة تعرض ما يخصها */
   const details = [];
   if (r.gift_type)      details.push(['🎁 نوع الهدية', r.gift_type]);
   if (r.recipient)      details.push(['👥 ممن يُهدى', r.recipient]);
@@ -379,11 +394,10 @@ function svcReqHTML(r){
     </div>
     <div class="o-addr">🛎️ الخدمة المطلوبة: <b>${r.service_name}</b></div>
     ${details.length ? `<div class="o-items">${detailRows}</div>` : ''}
-    ${(actions.length || r.status === 'ملغي') ? `
     <div class="o-actions">
       ${actions.map(s => `<button class="o-btn ${s==='ملغي'?'danger':''}" onclick="setSvcStatus('${r.id}','${s}')">${btnLabel(s)}</button>`).join('')}
-      ${r.status === 'ملغي' ? `<button class="o-btn danger" onclick="delSvcRequest('${r.id}')">🗑 حذف نهائي</button>` : ''}
-    </div>` : ''}
+      <button class="o-btn danger" onclick="delSvcRequest('${r.id}')" title="حذف نهائي">🗑</button>
+    </div>
   </div>`;
 }
 
@@ -410,6 +424,19 @@ async function delCancelledSvcRequests(){
   if (error) return toast('تعذر الحذف: ' + error.message, true);
   toast('تم حذف ' + cancelled.length + ' طلب ملغي 🗑');
   renderServiceRequests();
+}
+
+/* ★ حذف كل طلبات الخدمات */
+async function delAllSvcRequests(){
+  const { data: all } = await db.from('service_requests').select('id');
+  if (!all?.length) return toast('لا توجد طلبات خدمات');
+  if (!confirm('⚠️ حذف جميع طلبات الخدمات نهائياً؟ (' + all.length + ' طلب) — لا يمكن التراجع!')) return;
+  if (!confirm('متأكد تماماً؟ سيُحذف كل شيء الآن!')) return;
+  const { error } = await db.from('service_requests').delete().in('id', all.map(x => x.id));
+  if (error) return toast('تعذر الحذف: ' + error.message, true);
+  toast('تم حذف ' + all.length + ' طلب خدمة 🗑');
+  renderServiceRequests();
+  updateSvcBadge([]);
 }
 
 function startServiceRequestsChannel(){

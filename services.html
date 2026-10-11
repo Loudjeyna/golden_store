@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="services.css">
 <link rel="icon" href="images/logo.png" type="image/png">
@@ -54,11 +55,7 @@
 <div id="toast" class="toast"></div>
 
 <script>
-/* ═══ إعدادات ═══ */
-const SUPABASE_URL = 'https://cqkbqcvjjrirbrkyodbv.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_vFSo6qX4xD4wLLSPPTJhLA_KSIslSqu';
-const OWNER_WHATSAPP = '213672072270';
-
+/* ═══ الإعدادات الآن في config.js ═══ */
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const $ = s => document.querySelector(s);
 const money = n => Number(n).toLocaleString('en-US') + ' دج';

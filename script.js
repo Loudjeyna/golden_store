@@ -1,8 +1,4 @@
-/* ═══ الاتصال ═══ */
-const SUPABASE_URL = 'https://cqkbqcvjjrirbrkyodbv.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_vFSo6qX4xD4wLLSPPTJhLA_KSIslSqu';   // ← ★ Publishable key ★
-const OWNER_WHATSAPP = '213672072270';
-const MESSENGER_LINK = 'https://m.me/TIFALFALE';
+/* ═══ الاتصال — الإعدادات الآن في config.js ═══ */
 let lastOrderMsg = '';
 
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -579,3 +575,6 @@ function toggleTheme(){
   applyTheme();
 }
 applyTheme();
+
+/* ═══ رابط واتساب الفوتر — يُدار تلقائياً من config.js ═══ */
+document.querySelector('.social-link.wapp')?.setAttribute('href', `https://wa.me/${OWNER_WHATSAPP}`);
